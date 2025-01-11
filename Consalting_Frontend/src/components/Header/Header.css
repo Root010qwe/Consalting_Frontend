@@ -1,0 +1,48 @@
+.header {
+    display: flex;
+    align-items: center;
+    height: 110px;
+    background-color: #0000b4;
+    border-bottom: 2px solid white;
+    padding: 0;
+    position: relative;
+    text-align: center;
+  }
+  
+  .header-left {
+    flex: 1;
+  }
+  
+  .header-center {
+    flex: 2;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 160px; /* Отступ панели навигации от правого края */
+  }
+  
+  .brand-link h1 {
+    font-size: 24px;
+    padding: 7.5px 38px;
+    font-family: 'Dela Gothic One', sans-serif;
+    color: white;
+    margin: 0;
+    border: 2px solid white; /* Рамка вокруг текста */
+    display: inline-block; /* Ограничивает рамку размером текста */
+  }
+  
+  .navbar {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 20px; /* Фиксированный разрыв между кнопками */
+  }
+  
+  .nav-link {
+    color: white !important;
+    font-size: 18px;
+    text-decoration: none;
+  }

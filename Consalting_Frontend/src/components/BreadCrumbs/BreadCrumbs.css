@@ -1,0 +1,23 @@
+/* Breadcrumbs.css */
+
+.custom-breadcrumb {
+    background-color: #0000b4; /* Синий фон */
+    padding: 10px 20px;
+    padding-left: 160px;
+  }
+  
+  .custom-breadcrumb .breadcrumb-item {
+    display: inline; /* Выводим элементы в одну строку */
+    color: white;
+  }
+  
+  .custom-breadcrumb .breadcrumb-item a {
+    color: #ffffff; /* Белый цвет для текста ссылок */
+    text-decoration: none;
+  }
+  
+  .custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: " > "; /* Разделитель ">" между элементами */
+    color: #ffffff; /* Белый цвет для разделителя */
+    margin: 0 5px;
+  }
