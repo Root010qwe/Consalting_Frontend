@@ -1,10 +1,9 @@
-Система для поиска комплектующих и формирования заявок на доставку и отгрузку выбранных комплектующих,
-включающую в себя веб-сервис, веб-приложение и десктопное приложение.
+Консалтинг по информационной безопасности
 # Лабораторные
-## [Бэкенд (основной сервис)](https://github.com/Andrest31/Parking_bmstu_backend)
-- [SSR (лаб 1)](https://github.com/Andrest31/Parking_bmstu_backend/tree/SSR)
-- [База данных (лаб 2)](https://github.com/Andrest31/Parking_bmstu_backend/tree/ORM)
-- [Веб-сервис REST-API (лаб 3)](https://github.com/Andrest31/Parking_bmstu_backend/tree/API)
-- [Аутентификация и авторизация (лаб 4)](https://github.com/Andrest31/Parking_bmstu_backend/tree/auth)
-# [Фронтенд](https://github.com/Andrest31/Parking_bmstu_frontend)
-- [SPA (лаб 5)](https://github.com/Andrest31/Parking_bmstu_frontend/tree/SPA)
+## [Бэкенд (основной сервис)](https://github.com/Root010qwe/Consalting_Backend)
+- [SSR (лаб 1)](https://github.com/Root010qwe/Consalting_Backend/tree/django-ssr)
+- [База данных (лаб 2)](https://github.com/Root010qwe/Consalting_Backend/tree/BD)
+- [Веб-сервис REST-API (лаб 3)](https://github.com/Root010qwe/Consalting_Backend/tree/DRF)
+- [Аутентификация и авторизация (лаб 4)](https://github.com/Root010qwe/Consalting_Backend/tree/auth)
+# [Фронтенд](https://github.com/Root010qwe/Consalting_Frontend)
+- [SPA (лаб 5)](https://github.com/Root010qwe/Consalting_Frontend/tree/SPA)
