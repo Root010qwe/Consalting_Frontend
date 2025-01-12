@@ -1,34 +1,38 @@
-import {Col, Container, Nav, Navbar, NavbarBrand, NavItem, NavLink, Row} from "reactstrap";
-import {NavLink as RRNavLink} from "react-router-dom";
+import { useState } from "react";
+import "./Header.css";
+import { Link } from "react-router-dom";
 
 const Header = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    const closeMenu = () => {
+        setIsMenuOpen(false);
+    };
+
     return (
-        <header>
-            <Navbar className="p-3" expand="lg">
-                <Container>
-                    <Row>
-                        <Col md="6" className="d-flex align-items-center">
-                            <NavbarBrand tag={RRNavLink} to="/">
-                                Консалтинг по информационной безопасности
-                            </NavbarBrand>
-                        </Col>
-                        <Col md="6" className="d-flex justify-content-end align-items-center">
-                            <Nav className="fs-5 gap-3" navbar>
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/">
-                                        Главная
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/services">
-                                        Услуги
-                                    </NavLink>
-                                </NavItem>
-                            </Nav>
-                        </Col>
-                    </Row>
-                </Container>
-            </Navbar>
+        <header className="header">
+            <div className="header__logo">
+                <Link to="/" className="header__link">
+                    Консалтинг
+                </Link>
+            </div>
+            <nav className={`header__menu ${isMenuOpen ? "active" : ""}`}>
+                <Link to="/" className="header__link" onClick={closeMenu}>
+                    Главная
+                </Link>
+                <Link to="/services" className="header__link" onClick={closeMenu}>
+                    Услуги
+                </Link>
+            </nav>
+            <div className="header__burger" onClick={toggleMenu}>
+                <div />
+                <div />
+                <div />
+            </div>
         </header>
     );
 };

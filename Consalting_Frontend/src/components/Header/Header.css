@@ -1,48 +1,71 @@
 .header {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    height: 110px;
-    background-color: #0000b4;
-    border-bottom: 2px solid white;
-    padding: 0;
-    position: relative;
-    text-align: center;
-  }
-  
-  .header-left {
-    flex: 1;
-  }
-  
-  .header-center {
-    flex: 2;
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 160px; /* Отступ панели навигации от правого края */
-  }
-  
-  .brand-link h1 {
-    font-size: 24px;
-    padding: 7.5px 38px;
-    font-family: 'Dela Gothic One', sans-serif;
-    color: white;
-    margin: 0;
-    border: 2px solid white; /* Рамка вокруг текста */
-    display: inline-block; /* Ограничивает рамку размером текста */
-  }
-  
-  .navbar {
-    width: 100%;
-    display: flex;
-    justify-content: right;
-  }
-  
-  .nav-links {
-    display: flex;
-    gap: 20px; /* Фиксированный разрыв между кнопками */
-  }
-  
-  .nav-link {
-    color: white !important;
-    font-size: 18px;
+    padding: 15px 120px;
+    background-color: var(--header-bg);
+    height: 70px;
+}
+
+.header__link {
     text-decoration: none;
-  }
+    color: var(--header-color);
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.header__link:hover {
+    color: var(--primary-color);
+}
+
+.header__burger {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.header__burger div {
+    width: 25px;
+    height: 3px;
+    background-color: var(--header-color);
+    transition: all 0.3s ease;
+}
+
+.header__menu {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.header__menu.active {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--header-bg);
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+
+    .header__menu {
+        display: none;
+    }
+
+    .header__menu.active {
+        display: flex;
+    }
+
+    .header__burger {
+        display: flex;
+    }
+}

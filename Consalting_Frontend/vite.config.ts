@@ -4,8 +4,10 @@ import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  plugins: [react()],
+  //base: "/consalting_frontend",
   server: { 
-    host: true,
+    host: "0.0.0.0",
     port: 3000,
     proxy: {
       "/api": {
@@ -20,7 +22,8 @@ export default defineConfig({
       },
     }, 
   },
-  plugins: [react()],
+  
+
   resolve: {
     alias: {
       src: resolve(__dirname, 'src'), // используйте '@' как алиас для 'src'

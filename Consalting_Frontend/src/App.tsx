@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Breadcrumbs from "./components/BreadCrumbs";
 import ServicePage from "./pages/DescriptionPage";
 import ServicesListPage from "./pages/ServicesPage";
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import {T_Service} from "./modules/types.ts";
 import {Container, Row} from "reactstrap";
 import HomePage from "./pages/HomePage";
@@ -21,6 +21,7 @@ function App() {
 
     return (
         <div>
+           {/* <BrowserRouter basename="/consalting_frontend/"></BrowserRouter> */}
             <Header />
             <Container className="pt-4">
                 <Row className="mb-3">
