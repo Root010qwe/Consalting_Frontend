@@ -1,9 +1,60 @@
-.description-page-container {
+.service-page__container {
     padding: 20px;
-  }
-  
-  .description-page-image {
-    max-width: 400px;
-    margin-top: 20px;
-  }
-  
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Две колонки: изображение и текст */
+    gap: 20px;
+    align-items: start;
+}
+
+/* Стили для изображения */
+.service-page__image {
+    max-width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* Стили для текста */
+.service-page__info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.service-page__info h1 {
+    font-size: 2rem;
+}
+
+.service-page__info p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .service-page__container {
+        grid-template-columns: 1fr; /* Одна колонка для среднего экрана */
+        gap: 15px;
+    }
+
+    .service-page__info h1 {
+        font-size: 1.8rem;
+    }
+
+    .service-page__info p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-page__container {
+        padding: 15px;
+    }
+
+    .service-page__info h1 {
+        font-size: 1.5rem;
+    }
+
+    .service-page__info p {
+        font-size: 0.9rem;
+    }
+}
