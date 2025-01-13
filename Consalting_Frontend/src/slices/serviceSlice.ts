@@ -1,27 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { T_Service } from "../../modules/types";
 
-interface ServicesSlice {
+interface ServicesState {
     serviceName: string;
+    filteredServices: T_Service[];
+    isMock: boolean;
 }
 
-const initialState: ServicesSlice = {
+const initialState: ServicesState = {
     serviceName: "",
+    filteredServices: [],
+    isMock: false,
 };
 
-const servicesSlice = createSlice({
+const serviceSlice = createSlice({
     name: "services",
     initialState,
     reducers: {
-        updateServiceName: (state, action) => {
+        setServiceName(state, action: PayloadAction<string>) {
             state.serviceName = action.payload;
+        },
+        setFilteredServices(state, action: PayloadAction<T_Service[]>) {
+            state.filteredServices = action.payload;
         },
     },
 });
 
-export const useServiceName = () => useSelector((state: RootState) => state.services.serviceName);
+export const { setServiceName, setFilteredServices } = serviceSlice.actions;
 
-export const { updateServiceName } = servicesSlice.actions;
-
-export default servicesSlice.reducer;
+export default serviceSlice.reducer;

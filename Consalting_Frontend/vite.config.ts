@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   //base: "/consalting_frontend",
   server: { 
-    host: "0.0.0.0",
+    host: true,
     port: 3000,
     proxy: {
       "/api": {

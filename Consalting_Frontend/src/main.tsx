@@ -1,10 +1,22 @@
+import React from "react";
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import 'bootstrap/dist/css/bootstrap.css';
 import {BrowserRouter} from "react-router-dom";
+import { store } from "./store";
+import { Provider } from "react-redux";
+
+// Делаем store доступным в window
+if (process.env.NODE_ENV === "development") {
+    (window as any).store = store;
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>
+    <React.StrictMode>
+    <Provider store={store}>
+        <BrowserRouter>
+                <App />
+        </BrowserRouter>
+    </Provider>
+    </React.StrictMode>
 )

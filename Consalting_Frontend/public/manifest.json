@@ -3,7 +3,7 @@
 {
     "name": "Consalting Frontend",
     "short_name": "Consalting",
-    "start_url": "//",
+    "start_url": "/Consalting_Frontend/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#2684E6",
