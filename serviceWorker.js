@@ -2,11 +2,11 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open('static-cache').then((cache) => {
             return cache.addAll([
-              '/',
-              '/index.html',
-              '/logo192.png',
-              '/logo512.png',
-              '/manifest.json'
+              'Consalting_Frontend/',
+              'Consalting_Frontend/index.html',
+              'Consalting_Frontend/logo192.png',
+              'Consalting_Frontend/logo512.png',
+              'Consalting_Frontend/manifest.json'
             ]);
           }))
         });
