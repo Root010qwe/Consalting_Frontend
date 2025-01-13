@@ -10,13 +10,13 @@
     "orientation": "portrait-primary",
     "screenshots": [
   {
-    "src": "/Consalting_Frontend/screenshot1.jpeg",
+    "src": "/screenshot1.jpeg",
     "sizes": "1920x1080",
     "type": "image/png",
     "form_factor": "wide"
   },
   {
-    "src": "/Consalting_Frontend/screenshot2.jpeg",
+    "src": "/screenshot2.jpeg",
     "sizes": "1083x1920",
     "type": "image/png",
     "form_factor": "narrow"
@@ -24,12 +24,12 @@
 ],
     "icons": [
       {
-        "src": "/Consalting_Frontend/logo192.png",
+        "src": "/logo192.png",
         "type": "image/png",
         "sizes": "192x192"
       },
       {
-        "src": "/Consalting_Frontend/logo512.png",
+        "src": "/logo512.png",
         "type": "image/png",
         "sizes": "512x512"
       }
