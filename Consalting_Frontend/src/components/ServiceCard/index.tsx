@@ -1,6 +1,6 @@
 import "./ServiceCard.css"; // Подключаем стили
 import { Button, Card, CardBody, CardImg, CardText, CardTitle } from "reactstrap";
-import mockImage from "src/assets/default.png";
+import mockImage from "src/assets/5.png";
 import { Link } from "react-router-dom";
 import { T_Service } from "../../modules/types.ts";
 

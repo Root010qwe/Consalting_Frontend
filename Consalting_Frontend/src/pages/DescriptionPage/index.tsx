@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { T_Service } from "../../modules/types.ts";
 import { ServiceMocks } from "../../modules/Mocks.ts";
-import mockImage from "src/assets/default.png";
+import mockImage from "src/assets/5.png";
 
 interface ServicePageProps {
     selectedService: T_Service | null;

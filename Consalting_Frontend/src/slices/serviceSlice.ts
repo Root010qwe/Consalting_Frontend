@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { T_Service } from "../../modules/types";
+import { T_Service } from "../modules/types";
 
 interface ServicesState {
     serviceName: string;
