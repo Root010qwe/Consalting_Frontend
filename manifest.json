@@ -1,0 +1,38 @@
+
+
+{
+    "name": "Consalting Frontend",
+    "short_name": "Consalting",
+    "start_url": "/Consalting_Frontend/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2684E6",
+    "orientation": "portrait-primary",
+    "screenshots": [
+  {
+    "src": "Consalting_Frontend/screenshot1.jpeg",
+    "sizes": "1920x1080",
+    "type": "image/png",
+    "form_factor": "wide"
+  },
+  {
+    "src": "Consalting_Frontend/screenshot2.jpeg",
+    "sizes": "1083x1920",
+    "type": "image/png",
+    "form_factor": "narrow"
+  }
+],
+    "icons": [
+      {
+        "src": "Consalting_Frontend/logo192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "Consalting_Frontend/logo512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  }
+  
