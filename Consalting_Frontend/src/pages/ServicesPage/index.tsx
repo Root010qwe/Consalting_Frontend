@@ -2,17 +2,19 @@ import "./ServicesPage.css"; // Подключаем стили
 import { Button, Col, Container, Form, Input, Row } from "reactstrap";
 import { T_Service } from "../../modules/types.ts";
 import ServiceCard from "../../components/ServiceCard/index.tsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ServiceMocks } from "../../modules/Mocks.ts";
 import * as React from "react";
-
+import { useDispatch, useSelector } from "react-redux"; // Добавлено
+import { RootState } from "../../store"; // Добавлено
+import { setServiceName } from "../../slices/serviceSlice"; // Добавлено
 interface ServicesListPageProps {
     services: T_Service[];
     setServices: (services: T_Service[]) => void;
     isMock: boolean;
     setIsMock: (mock: boolean) => void;
-    serviceName: string;
-    setServiceName: (name: string) => void;
+    // serviceName: string;
+    // setServiceName: (name: string) => void;
 }
 
 const ServicesListPage: React.FC<ServicesListPageProps> = ({
@@ -20,9 +22,13 @@ const ServicesListPage: React.FC<ServicesListPageProps> = ({
     setServices,
     isMock,
     setIsMock,
-    serviceName,
-    setServiceName,
+    // serviceName,
+    // setServiceName,
 }) => {
+    const dispatch = useDispatch(); // Добавлено
+    const serviceName = useSelector((state: RootState) => state.services.serviceName); // Данные из Redux
+    const [localServiceName, setLocalServiceName] = useState(serviceName); // Локальное состояние для поля ввода
+
     const fetchData = async () => {
         const url = `/api/services/?name=${serviceName.toLowerCase()}`;
         try {
@@ -46,6 +52,8 @@ const ServicesListPage: React.FC<ServicesListPageProps> = ({
 
     const search = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        dispatch(setServiceName(localServiceName)); // Обновляем состояние в Redux
         if (isMock) {
             getMocks();
         } else {
@@ -55,7 +63,7 @@ const ServicesListPage: React.FC<ServicesListPageProps> = ({
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [serviceName]); // Теперь отслеживаем изменения serviceName в Redux
 
     return (
         <Container className="services-page">
@@ -65,8 +73,8 @@ const ServicesListPage: React.FC<ServicesListPageProps> = ({
                         <Row>
                             <Col md="8">
                                 <Input
-                                    value={serviceName}
-                                    onChange={(e) => setServiceName(e.target.value)}
+                                    value={localServiceName} // Локальное состояние
+                                    onChange={(e) => setLocalServiceName(e.target.value)} // Обновляем локальное состояние
                                     placeholder="Введите название услуги"
                                 />
                             </Col>
