@@ -8,9 +8,22 @@ import {T_Service} from "./modules/types.ts";
 import {Container, Row} from "reactstrap";
 import HomePage from "./pages/HomePage";
 import "./styles.css";
+import { useEffect } from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 function App() {
 
+    useEffect(() => {
+        invoke('tauri', { cmd: 'create' })
+            .then(() => console.log("Tauri launched"))
+            .catch(() => console.log("Tauri not launched"));
+
+        return () => {
+            invoke('tauri', { cmd: 'close' })
+                .then(() => console.log("Tauri closed"))
+                .catch(() => console.log("Tauri not closed"));
+        };
+    }, []);
     const [services, setServices] = useState<T_Service[]>([]);
 
     const [selectedService, setSelectedService] = useState<T_Service | null>(null);
