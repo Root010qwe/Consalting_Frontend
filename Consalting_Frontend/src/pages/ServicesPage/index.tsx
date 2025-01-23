@@ -8,6 +8,8 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux"; // Добавлено
 import { RootState } from "../../store"; // Добавлено
 import { setServiceName } from "../../slices/serviceSlice"; // Добавлено
+import { dest_api } from "../../target_config.ts";
+
 interface ServicesListPageProps {
     services: T_Service[];
     setServices: (services: T_Service[]) => void;
@@ -30,7 +32,7 @@ const ServicesListPage: React.FC<ServicesListPageProps> = ({
     const [localServiceName, setLocalServiceName] = useState(serviceName); // Локальное состояние для поля ввода
 
     const fetchData = async () => {
-        const url = `/api/services/?name=${serviceName.toLowerCase()}`;
+        const url = dest_api +`/services/?name=${serviceName.toLowerCase()}`;
         try {
             const response = await fetch(url);
             const data = await response.json();

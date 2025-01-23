@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { T_Service } from "../../modules/types.ts";
 import { ServiceMocks } from "../../modules/Mocks.ts";
 import mockImage from "src/assets/5.png";
+import { dest_api } from "../../target_config.ts";
 
 interface ServicePageProps {
     selectedService: T_Service | null;
@@ -22,7 +23,7 @@ const ServicePage: React.FC<ServicePageProps> = ({
     const { id } = useParams<{ id: string }>();
 
     const fetchData = async () => {
-        const url = `/api/services/${id}`;
+        const url = dest_api + `/services/${id}`;
         try {
             const response = await fetch(url);
             const serviceData = await response.json();

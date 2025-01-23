@@ -2,14 +2,20 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "consalting-frontend",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.tauri-app.app",
   "build": {
-    "frontendDist": "../build",
+    "frontendDist": "../dist",
     "devUrl": "http://localhost:3000",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
   },
+  "plugins": {
+        "http": {
+          "enabled": true
+        }
+    },
   "app": {
+    "withGlobalTauri": true,
     "windows": [
       {
         "title": "consalting-frontend",
