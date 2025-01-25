@@ -1,69 +1,24 @@
-import "./ServicesPage.css"; // Подключаем стили
+import "./ServicesPage.css";
 import { Button, Col, Container, Form, Input, Row } from "reactstrap";
-import { T_Service } from "../../modules/types.ts";
-import ServiceCard from "../../components/ServiceCard/index.tsx";
+import ServiceCard from "../../components/ServiceCard/index";
 import { useEffect, useState } from "react";
-import { ServiceMocks } from "../../modules/Mocks.ts";
-import * as React from "react";
-import { useDispatch, useSelector } from "react-redux"; // Добавлено
-import { RootState } from "../../store"; // Добавлено
-import { setServiceName } from "../../slices/serviceSlice"; // Добавлено
-interface ServicesListPageProps {
-    services: T_Service[];
-    setServices: (services: T_Service[]) => void;
-    isMock: boolean;
-    setIsMock: (mock: boolean) => void;
-    // serviceName: string;
-    // setServiceName: (name: string) => void;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../store";
+import { setServiceName, fetchServices } from "../../slices/serviceSlice";
 
-const ServicesListPage: React.FC<ServicesListPageProps> = ({
-    services,
-    setServices,
-    isMock,
-    setIsMock,
-    // serviceName,
-    // setServiceName,
-}) => {
-    const dispatch = useDispatch(); // Добавлено
-    const serviceName = useSelector((state: RootState) => state.services.serviceName); // Данные из Redux
-    const [localServiceName, setLocalServiceName] = useState(serviceName); // Локальное состояние для поля ввода
+const ServicesListPage: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { serviceName, filteredServices, isMock, loading } = useSelector((state: RootState) => state.services);
+    const [localServiceName, setLocalServiceName] = useState(serviceName);
 
-    const fetchData = async () => {
-        const url = `/api/services/?name=${serviceName.toLowerCase()}`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            setServices(data.services);
-            setIsMock(false);
-        } catch {
-            getMocks();
-        }
-    };
-
-    const getMocks = () => {
-        setServices(
-            ServiceMocks.filter((service) =>
-                service.name.toLowerCase().includes(serviceName.toLowerCase())
-            )
-        );
-        setIsMock(true);
-    };
-
-    const search = async (e: React.FormEvent) => {
+    const search = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        dispatch(setServiceName(localServiceName)); // Обновляем состояние в Redux
-        if (isMock) {
-            getMocks();
-        } else {
-            await fetchData();
-        }
+        dispatch(setServiceName(localServiceName));
     };
 
     useEffect(() => {
-        fetchData();
-    }, [serviceName]); // Теперь отслеживаем изменения serviceName в Redux
+        dispatch(fetchServices(serviceName));
+    }, [serviceName, dispatch]);
 
     return (
         <Container className="services-page">
@@ -73,13 +28,13 @@ const ServicesListPage: React.FC<ServicesListPageProps> = ({
                         <Row>
                             <Col md="8">
                                 <Input
-                                    value={localServiceName} // Локальное состояние
-                                    onChange={(e) => setLocalServiceName(e.target.value)} // Обновляем локальное состояние
+                                    value={localServiceName}
+                                    onChange={(e) => setLocalServiceName(e.target.value)}
                                     placeholder="Введите название услуги"
                                 />
                             </Col>
                             <Col>
-                                <Button color="primary" className="w-100 search-btn">
+                                <Button color="primary" className="w-100 search-btn" type="submit">
                                     Поиск
                                 </Button>
                             </Col>
@@ -88,9 +43,13 @@ const ServicesListPage: React.FC<ServicesListPageProps> = ({
                 </Col>
             </Row>
             <div className="services-page__cards">
-                {services.map((service) => (
-                    <ServiceCard key={service.id} service={service} isMock={isMock} />
-                ))}
+                {loading ? (
+                    <div>Загрузка...</div>
+                ) : (
+                    filteredServices.map((service) => (
+                        <ServiceCard key={service.id} service={service} isMock={isMock} />
+                    ))
+                )}
             </div>
         </Container>
     );
