@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../store';
-import { loginUserAsync } from '../../slices/userSlice';
+import { loginUser } from '../../slices/userSlice';
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
+  const [formData, setFormData] = useState({ username: '', password: '' });
+  const error = useSelector((state: RootState) => state.user.error);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const error = useSelector((state: RootState) => state.user.error);
-
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,40 +17,36 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.username && formData.password) {
-      await dispatch(loginUserAsync(formData));
-      navigate('/'); // Переход на главную страницу после успешной авторизации
+    const result = await dispatch(loginUser(formData));
+    if (result.meta.requestStatus === 'fulfilled') {
+      navigate('/');
     }
   };
 
   return (
-    <div className="LoginPage">
+    <div className="LoginPage wrapper"> {/* Добавлен класс wrapper */}
       <form onSubmit={handleSubmit}>
-        <h1>Войти</h1>
+        <h1>Вход</h1>
+        {error && <h2 className="error">{error}</h2>} {/* Изменено на h2 */}
         <div className="form-group">
-          <label htmlFor="username">Логин:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            required
-            value={formData.username}
-            onChange={handleChange}
+          <label>Логин</label>
+          <input 
+            type="text" 
+            name="username" 
+            value={formData.username} 
+            onChange={handleChange} 
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Пароль:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            value={formData.password}
-            onChange={handleChange}
+          <label>Пароль</label>
+          <input 
+            type="password" 
+            name="password" 
+            value={formData.password} 
+            onChange={handleChange} 
           />
         </div>
-        {error && <h2>{error}</h2>}
-        <button type="submit">Войти</button>
+        <button type="submit" className="btn btn-primary">Войти</button>
       </form>
     </div>
   );

@@ -1,72 +1,140 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { api } from "../api"; // Предположим, что у вас есть api для запросов
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { T_User, T_Login, T_RegistrationData } from '../modules/types';
+import { api } from '../api';
+import { getCsrfToken } from '../modules/Utils';
+import { RootState } from '../store'
 
-interface UserState {
-    username: string;
+ interface UserState {
+    user: T_User | null;
     isAuthenticated: boolean;
-    error?: string | null;
-}
+    error: string | null;
+    loading: boolean;
+  }
 
 const initialState: UserState = {
-    username: "",
+    user: null,
     isAuthenticated: false,
     error: null,
+    loading: false,
+  };
+
+export type T_ProfileUpdate = {
+  username?: string;
+  email?: string;
+  password?: string;
 };
 
-// Асинхронное действие для авторизации
-export const loginUserAsync = createAsyncThunk(
-    "user/loginUserAsync",
-    async (credentials: { username: string; password: string }, { rejectWithValue }) => {
-        try {
-            const response = await api.login.loginCreate(credentials);
-            return response.data;
-        } catch (error) {
-            return rejectWithValue("Ошибка авторизации");
-        }
+export const loginUser = createAsyncThunk(
+  'user/login',
+  async (credentials: T_Login, { rejectWithValue }) => {
+    try {
+      const response = await api.api.apiUsersLoginCreate(credentials);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue('Ошибка авторизации');
     }
+  }
 );
 
-// Асинхронное действие для деавторизации
-export const logoutUserAsync = createAsyncThunk(
-    "user/logoutUserAsync",
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await api.logout.logoutCreate();
-            return response.data;
-        } catch (error) {
-            return rejectWithValue("Ошибка при выходе из системы");
-        }
-    }
-);
+export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
+  try {
+    await api.api.apiUsersLogoutCreate({
+        withCredentials: true,
+        headers: {
+            "X-CSRFToken": getCsrfToken(), 
+        },
+    });
+  } catch (error) {
+    return rejectWithValue('Ошибка при выходе');
+  }
+});
 
 const userSlice = createSlice({
-    name: "user",
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(loginUserAsync.pending, (state) => {
-                state.error = null;
-            })
-            .addCase(loginUserAsync.fulfilled, (state, action) => {
-                const { username } = action.payload;
-                state.username = username;
-                state.isAuthenticated = true;
-                state.error = null;
-            })
-            .addCase(loginUserAsync.rejected, (state, action) => {
-                state.error = action.payload as string;
-                state.isAuthenticated = false;
-            })
-            .addCase(logoutUserAsync.fulfilled, (state) => {
-                state.username = "";
-                state.isAuthenticated = false;
-                state.error = null;
-            })
-            .addCase(logoutUserAsync.rejected, (state, action) => {
-                state.error = action.payload as string;
-            });
-    },
+  name: 'user',
+  initialState,
+  reducers: {
+    setProfileData: (state, action: PayloadAction<Partial<T_User>>) => {
+        if (state.user) {
+          state.user = { ...state.user, ...action.payload };
+        }
+      },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.fulfilled, (state,  { payload }: any) => {
+        state.user = payload;
+        state.isAuthenticated = true;
+        state.error = null;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.error = null;
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      builder.addCase(updateProfile.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user = { ...state.user, ...action.payload };
+        }
+        state.error = null;
+      });
+      
+      builder.addCase(updateProfile.rejected, (state, action) => {
+        state.error = action.payload as string;
+      });
+  },
 });
 
 export default userSlice.reducer;
+export const { setProfileData } = userSlice.actions;
+
+// регистрация
+
+// Добавим новый асинхронный экшен
+export const registerUser = createAsyncThunk(
+    'user/register',
+    async (userData: T_RegistrationData, { rejectWithValue }) => {
+      try {
+        const response = await api.user.userCreate(userData);
+        return response.data;
+      } catch (error) {
+        return rejectWithValue('Ошибка регистрации');
+      }
+    }
+  );
+
+// update user's profile user 
+export const updateProfile = createAsyncThunk(
+    'user/updateProfile',
+    async (userData: T_ProfileUpdate, { rejectWithValue, getState }) => {
+      try {
+        const state = getState() as RootState;
+        const response = await api.api.apiUsersUpdateUpdate({
+          ...userData,
+          id: state.user.user?.id,
+        }, {
+          headers: {
+            "X-CSRFToken": getCsrfToken(),
+          },
+          withCredentials: true,
+        });
+        return response.data;
+      } catch (error) {
+        return rejectWithValue('Ошибка обновления профиля');
+      }
+    }
+  );

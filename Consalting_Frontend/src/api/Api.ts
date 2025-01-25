@@ -9,6 +9,35 @@
  * ---------------------------------------------------------------
  */
 
+export interface Login {
+  /**
+   * Username
+   * @minLength 1
+   */
+  username: string;
+  /**
+   * Password
+   * @minLength 1
+   */
+  password: string;
+}
+
+export interface User {
+  /** ID */
+  id?: number;
+  /**
+   * Username
+   * @minLength 1
+   * @maxLength 50
+   */
+  username: string;
+  /**
+   * Password
+   * @minLength 1
+   */
+  password: string;
+}
+
 export interface Request {
   /** ID */
   id?: number;
@@ -105,20 +134,6 @@ export interface RequestDetail {
    * @format decimal
    */
   total_cost?: string | null;
-}
-
-export interface User {
-  /**
-   * Username
-   * @minLength 1
-   * @maxLength 50
-   */
-  username: string;
-  /**
-   * Password
-   * @minLength 1
-   */
-  password: string;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -266,6 +281,60 @@ export class HttpClient<SecurityDataType = unknown> {
  * Test description
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  api = {
+    /**
+     * @description Signs the user in
+     *
+     * @tags api
+     * @name ApiUsersLoginCreate
+     * @request POST:/api/users/login/
+     * @secure
+     */
+    apiUsersLoginCreate: (data: Login, params: RequestParams = {}) =>
+      this.request<Login, any>({
+        path: `/api/users/login/`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Деавторизирует текущего пользователя.
+     *
+     * @tags api
+     * @name ApiUsersLogoutCreate
+     * @request POST:/api/users/logout/
+     * @secure
+     */
+    apiUsersLogoutCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/users/logout/`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Обновляет данные текущего пользователя (partial=True)
+     *
+     * @tags api
+     * @name ApiUsersUpdateUpdate
+     * @request PUT:/api/users/update/
+     * @secure
+     */
+    apiUsersUpdateUpdate: (data: User, params: RequestParams = {}) =>
+      this.request<User, void>({
+        path: `/api/users/update/`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
   requestItems = {
     /**
      * No description
@@ -645,59 +714,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/user/${id}/`,
         method: "DELETE",
         secure: true,
-        ...params,
-      }),
-  };
-  users = {
-    /**
-     * @description Signs the user in
-     *
-     * @tags users
-     * @name UsersLoginCreate
-     * @request POST:/users/login/
-     * @secure
-     */
-    usersLoginCreate: (data: User, params: RequestParams = {}) =>
-      this.request<User, any>({
-        path: `/users/login/`,
-        method: "POST",
-        body: data,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Деавторизирует текущего пользователя.
-     *
-     * @tags users
-     * @name UsersLogoutCreate
-     * @request POST:/users/logout/
-     * @secure
-     */
-    usersLogoutCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/users/logout/`,
-        method: "POST",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Обновляет данные текущего пользователя (partial=True)
-     *
-     * @tags users
-     * @name UsersUpdateUpdate
-     * @request PUT:/users/update/
-     * @secure
-     */
-    usersUpdateUpdate: (data: User, params: RequestParams = {}) =>
-      this.request<User, void>({
-        path: `/users/update/`,
-        method: "PUT",
-        body: data,
-        secure: true,
-        format: "json",
         ...params,
       }),
   };

@@ -1,97 +1,82 @@
-import { FC, useState } from "react";
-import "./RegistrationPage.css";
-import { api } from "../../api"; // Подключение API
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import { registerUser } from '../../slices/userSlice';
+import { useNavigate } from 'react-router-dom';
+import './RegistrationPage.css';
 
-export const RegistrationPage: FC = () => {
+const RegistrationPage = () => {
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    first_name: "",
-    last_name: "",
-    password: "",
+    username: '',
+    password: '',
+    email: '',
   });
-
-  const [error, setError] = useState(false);
+  
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  const { loading, error } = useSelector((state: RootState) => state.user);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await api.users.usersRegisterCreate(formData); // Вызов API
-      navigate("/login"); // Переход на страницу авторизации
-    } catch {
-      setError(true);
+    const result = await dispatch(registerUser(formData));
+    if (result.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
-    <div className="RegistrationPage">
+    <div className="registration-page">
       <form onSubmit={handleSubmit}>
-        <h1>Регистрация</h1>
+        <h2>Регистрация</h2>
+        {error && <div className="error-message">{error}</div>}
+        
         <div className="form-group">
-          <label htmlFor="username">Логин:</label>
+          <label>Имя пользователя:</label>
           <input
             type="text"
-            id="username"
             name="username"
             value={formData.username}
             onChange={handleChange}
             required
           />
         </div>
+
         <div className="form-group">
-          <label htmlFor="email">Email:</label>
+          <label>Email:</label>
           <input
             type="email"
-            id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
           />
         </div>
+
         <div className="form-group">
-          <label htmlFor="first_name">Имя:</label>
-          <input
-            type="text"
-            id="first_name"
-            name="first_name"
-            value={formData.first_name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="last_name">Фамилия:</label>
-          <input
-            type="text"
-            id="last_name"
-            name="last_name"
-            value={formData.last_name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Пароль:</label>
+          <label>Пароль:</label>
           <input
             type="password"
-            id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
           />
         </div>
-        {error && <h2>Ошибка регистрации</h2>}
-        <button type="submit">Зарегистрироваться</button>
+        
+        <button type="submit"  className="btn btn-primary" disabled={loading}>
+          {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+        </button>
       </form>
     </div>
   );
 };
+
+// Явно указываем экспорт по умолчанию
+export default RegistrationPage;

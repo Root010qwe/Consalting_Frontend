@@ -1,71 +1,93 @@
-.header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.header-navbar {
+    background-color: var(--header-bg);
+    padding: 0.8rem 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    color: var(--header-color) !important;
+    font-size: 1.4rem;
+    font-weight: 600;
+    transition: all 0.3s ease; /* Добавлен переход для бренда */
+}
+
+.navbar-brand:hover {
+    opacity: 0.8; /* Эффект при наведении как у ссылок */
+}
+
+.header-nav {
+    gap: 1.5rem;
     align-items: center;
-    padding: 15px 120px;
-    background-color: var(--header-bg);
-    height: 70px;
 }
 
-.header__link {
-    text-decoration: none;
-    color: var(--header-color);
-    font-size: 1rem;
-    transition: color 0.3s ease;
-}
-
-.header__link:hover {
-    color: var(--primary-color);
-}
-
-.header__burger {
-    display: none;
-    cursor: pointer;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.header__burger div {
-    width: 25px;
-    height: 3px;
-    background-color: var(--header-color);
+/* Общие стили для всех элементов навигации */
+.nav-item .nav-link,
+.nav-item .username {
+    color: var(--header-color) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    border-radius: 5px;
     transition: all 0.3s ease;
+    text-decoration: none !important;
+    position: relative;
 }
 
-.header__menu {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+/* Эффект при наведении для всех ссылок */
+.nav-item .nav-link:hover:not(.logout),
+.nav-item .username:hover {
+    color: var(--primary-color) !important;
+    transform: translateY(-1px);
 }
 
-.header__menu.active {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: var(--header-bg);
+/* Подчеркивание при наведении */
+.nav-item .nav-link::after {
+    content: '';
     position: absolute;
-    top: 70px;
-    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-item .nav-link:hover::after {
     width: 100%;
-    padding: 20px;
-    border-radius: 0 0 10px 10px;
+}
+
+/* Специфичные стили для кнопки выхода */
+.logout {
+    background-color: transparent !important;
+    color: #dc3545 !important;
+    border: 1px solid #dc3545;
+}
+
+.logout:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
 }
 
 @media (max-width: 768px) {
-    .header {
-        padding: 15px 20px;
+    .header-nav {
+        padding: 1rem 0;
+        gap: 0.5rem;
     }
-
-    .header__menu {
-        display: none;
+    
+    .nav-item {
+        width: 100%;
+        text-align: center;
     }
-
-    .header__menu.active {
-        display: flex;
+    
+    .nav-link {
+        justify-content: center;
     }
-
-    .header__burger {
-        display: flex;
+    
+    .nav-item .nav-link::after {
+        display: none; /* Скрываем подчеркивание на мобильных */
+    }
+    
+    .user-section {
+        flex-direction: column;
+        margin-top: 1rem;
     }
 }

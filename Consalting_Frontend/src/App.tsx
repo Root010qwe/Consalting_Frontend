@@ -8,7 +8,9 @@ import {T_Service} from "./modules/types.ts";
 import {Container, Row} from "reactstrap";
 import HomePage from "./pages/HomePage";
 import "./styles.css";
-
+import LoginPage from './pages/LoginPage';
+import RegistrationPage from './pages/RegistrationPage';
+import ProfilePage from './pages/ProfilePage';
 function App() {
 
     const [services, setServices] = useState<T_Service[]>([]);
@@ -30,6 +32,9 @@ function App() {
                 <Row>
                     <Routes>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegistrationPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
                         <Route 
                             path="/services/" 
                             element={

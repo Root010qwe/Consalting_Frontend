@@ -1,23 +1,37 @@
-/* Breadcrumbs.css */
-
 .custom-breadcrumb {
-    background-color: #0000b4; /* Синий фон */
-    padding: 10px 20px;
-    padding-left: 160px;
+  
+  padding: 1rem 2rem;
+  margin: 0;
+  border-radius: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: var(--text-color);
+  content: ">";
+  padding: 0 0.8rem;
+}
+
+.breadcrumb-item a {
+  color: var(--primary-color) !important;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.breadcrumb-item a:hover {
+  opacity: 0.8;
+}
+
+.breadcrumb-item.active {
+  color: var(--text-color) !important;
+}
+
+@media (max-width: 768px) {
+  .custom-breadcrumb {
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
   }
   
-  .custom-breadcrumb .breadcrumb-item {
-    display: inline; /* Выводим элементы в одну строку */
-    color: white;
+  .breadcrumb-item + .breadcrumb-item::before {
+      padding: 0 0.5rem;
   }
-  
-  .custom-breadcrumb .breadcrumb-item a {
-    color: #ffffff; /* Белый цвет для текста ссылок */
-    text-decoration: none;
-  }
-  
-  .custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
-    content: " > "; /* Разделитель ">" между элементами */
-    color: #ffffff; /* Белый цвет для разделителя */
-    margin: 0 5px;
-  }
+}

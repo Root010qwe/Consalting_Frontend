@@ -1,83 +1,56 @@
-/* Контейнер страницы */
-.RegistrationPage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
+.registration-page {
+  max-width: 400px ! important  ;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.registration-page h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--search-border);
+  border-radius: 4px;
+  background: var(--search-bg);
+  color: var(--text-color);
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: .75rem;
   
-  /* Заголовок */
-  .RegistrationPage h1 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-    text-align: center;
-    color: #ffffff; /* Белый текст */
-  }
-  
-  /* Форма */
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-    max-width: 500px; /* Максимальная ширина формы */
-    background: rgba(0, 0, 0, 0.8); /* Полупрозрачный фон */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  }
-  
-  /* Блок для label и input */
-  .form-group {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Расстояние между label и input */
-    margin-top: 10px;
-  }
-  
-  /* Метки */
-  form label {
-    font-size: 20px; /* Увеличенный шрифт */
-    color: #ffffff; /* Белый текст */
-    min-width: 100px; /* Фиксированная ширина метки */
-    text-align: left; /* Выровнено по правому краю */
-  }
-  
-  /* Поля ввода */
-  form input {
-    flex: 1; /* Поле ввода растягивается на оставшееся пространство */
-    padding: 10px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    background: rgba(30, 30, 30, 0.8); /* Полупрозрачный фон */
-    color: #ffffff;
-    font-size: 1rem;
-  }
-  
-  form input:focus {
-    border-color: #87CEEB; /* Цвет рамки при фокусе */
-    outline: none;
-    background: rgba(50, 50, 50, 0.9);
-  }
-  
-  /* Кнопка */
-  form button {
-    padding: 10px;
-    background: #87CEEB; /* Основной цвет кнопки */
-    border: none;
-    border-radius: 5px;
-    color: #000; /* Чёрный текст кнопки */
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-top: 20px;
-  }
-  
-  form button:hover {
-    background: #00aaff;
-  }
-  
-  form button:active {
-    background: #0077cc;
-  }
+}
+
+button[type="submit"]:hover {
+  background: var(--primary-color__hover);
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 1rem;
+  text-align: center;
+}
