@@ -1,9 +1,8 @@
 import React, { FormEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { setProfileData, updateProfile } from '../../slices/userSlice';
+import {  updateProfile } from '../../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
-import Breadcrumbs from '../../components/BreadCrumbs';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './ProfilePage.css';
 import {useState} from "react";
@@ -64,7 +63,7 @@ const ProfilePage = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -72,7 +71,7 @@ const ProfilePage = () => {
             value={localData.email}
             onChange={handleChange}
           />
-        </Form.Group>
+        </Form.Group> */}
 
         <Form.Group className="mb-3">
           <Form.Label>Новый пароль</Form.Label>

@@ -30,3 +30,29 @@
         gap: 10px;
     }
 }
+
+
+/* корзина*/
+.basket-btn {
+    padding: 8px !important;
+    background-color: var(--search-bg) !important;
+    border-color: var(--search-border) !important;
+    color: var(--search-color) !important;
+  }
+  
+  
+  .basket-btn:hover {
+    background-color: var(--primary-btn-bg--hover) !important;
+    border-color: var(--primary-btn-border--hover) !important;
+    color: var(--primary-btn-color--hover) !important;
+  }
+  
+  .basket-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+  
+  .basket-badge {
+    font-size: 0.75rem !important;
+    min-width: 1.25rem !important;
+  }

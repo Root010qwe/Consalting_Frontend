@@ -1,8 +1,7 @@
-import { Breadcrumb, BreadcrumbItem } from "reactstrap";
-import { Link, useLocation } from "react-router-dom";
-import { T_Service } from "../../modules/types";
-import { isHomePage, isServicePage } from "../../modules/Utils";
-import "./Breadcrumbs.css";
+import {Breadcrumb, BreadcrumbItem} from "reactstrap";
+import {Link, useLocation} from "react-router-dom";
+import {T_Service} from "../../modules/types.ts";
+import {isHomePage, isServicePage} from "../../modules/Utils.ts";
 
 interface BreadcrumbsProps {
     selectedService: T_Service | null;
@@ -12,24 +11,20 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ selectedService }) => {
     const location = useLocation();
 
     return (
-        <Breadcrumb className="custom-breadcrumb">
+        <Breadcrumb className="fs-5" style={{ paddingLeft: "75px" }}>
             {isHomePage(location.pathname) && (
                 <BreadcrumbItem>
                     <Link to="/">Главная</Link>
                 </BreadcrumbItem>
             )}
             {location.pathname.includes("/services") && (
-                <BreadcrumbItem active={!isServicePage(location.pathname)}>
-                    {isServicePage(location.pathname) ? (
-                        <Link to="/services">Услуги</Link>
-                    ) : (
-                        "Услуги"
-                    )}
+                <BreadcrumbItem active>
+                    <Link to="/services">Услуги</Link>
                 </BreadcrumbItem>
             )}
-            {isServicePage(location.pathname) && selectedService && (
+            {isServicePage(location.pathname) && (
                 <BreadcrumbItem active>
-                    {selectedService.name}
+                    <Link to={location.pathname}>{selectedService?.name}</Link>
                 </BreadcrumbItem>
             )}
         </Breadcrumb>

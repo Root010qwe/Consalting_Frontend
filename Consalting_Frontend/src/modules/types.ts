@@ -1,12 +1,12 @@
 // Тип для услуги
 export type T_Service = {
-    id: number;
-    name: string;
-    description: string;
-    status: string;
-    price: string;
-    duration: number;
-    image_url: string;
+    id: number,
+    name: string,
+    description: string,
+    status: string,
+    price: string,
+    duration: number,
+    image_url: string
 };
 
 // Тип для запроса
@@ -43,9 +43,9 @@ export type T_RequestDetail = {
 export type T_User = {
     id: number;
     username: string;
-    email: string;
-    first_name?: string;
-    last_name?: string;
+    password: string; // Добавляем обязательное поле
+    is_staff?: boolean;
+    is_superuser?: boolean;
 };
 
 // Тип для входа в систему
@@ -62,8 +62,5 @@ export type T_RegistrationData = {
 
 export type T_UpdateProfileData = {
     username?: string;
-    email?: string;
     password?: string;
-    first_name?: string;
-    last_name?: string;
   };

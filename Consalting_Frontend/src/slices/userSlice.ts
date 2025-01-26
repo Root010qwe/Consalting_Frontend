@@ -3,7 +3,7 @@ import { T_User, T_Login, T_RegistrationData } from '../modules/types';
 import { api } from '../api';
 import { getCsrfToken } from '../modules/Utils';
 import { RootState } from '../store'
-
+import { clearDraft } from '../slices/requestDraftSlice';
  interface UserState {
     user: T_User | null;
     isAuthenticated: boolean;
@@ -36,18 +36,20 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
-  try {
-    await api.api.apiUsersLogoutCreate({
+export const logoutUser = createAsyncThunk(
+  'user/logout', 
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      await api.api.apiUsersLogoutCreate({
         withCredentials: true,
-        headers: {
-            "X-CSRFToken": getCsrfToken(), 
-        },
-    });
-  } catch (error) {
-    return rejectWithValue('Ошибка при выходе');
+        headers: { "X-CSRFToken": getCsrfToken() },
+      });
+      dispatch(clearDraft()); // Очищаем данные корзины при выходе
+    } catch (error) {
+      return rejectWithValue('Ошибка при выходе');
+    }
   }
-});
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -123,15 +125,23 @@ export const updateProfile = createAsyncThunk(
     async (userData: T_ProfileUpdate, { rejectWithValue, getState }) => {
       try {
         const state = getState() as RootState;
-        const response = await api.api.apiUsersUpdateUpdate({
-          ...userData,
-          id: state.user.user?.id,
-        }, {
+        const userId = state.user.user?.id;
+        if (!userId) {
+          throw new Error('User not authenticated');
+        }
+        const payload = {
+          id: userId,
+          ...userData
+        } as unknown as T_User; // Или создайте правильный тип для API
+
+        const response = await api.api.apiUsersUpdateUpdate( payload,
+         {
           headers: {
             "X-CSRFToken": getCsrfToken(),
           },
           withCredentials: true,
         });
+        
         return response.data;
       } catch (error) {
         return rejectWithValue('Ошибка обновления профиля');

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { T_Service } from "../modules/types";
 import { ServiceMocks } from "../modules/Mocks";
+import { setAppId, setCount } from '../slices/requestDraftSlice';
 
 interface ServicesState {
     serviceName: string;
@@ -18,13 +19,17 @@ const initialState: ServicesState = {
 
 export const fetchServices = createAsyncThunk(
     'services/fetchServices',
-    async (serviceName: string, { rejectWithValue }) => {
+    async (serviceName: string, { dispatch, rejectWithValue }) => {
         try {
             const response = await fetch(`/api/services/?name=${serviceName.toLowerCase()}`);
-            if (!response.ok) {
-                throw new Error('Server error');
-            }
+            if (!response.ok) { throw new Error('Server error');}
             const data = await response.json();
+
+            const app_id = data.draft_vacancy_application;
+            const count = data.count;
+            dispatch(setAppId(app_id));
+            dispatch(setCount(count));    
+
             return data.services;
         } catch (error) {
             return rejectWithValue('Ошибка при загрузке данных');
