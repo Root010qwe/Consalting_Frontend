@@ -1,53 +1,68 @@
 import React, { FormEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import {  updateProfile } from '../../slices/userSlice';
+import { updateProfile } from '../../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import './ProfilePage.css';
-import {useState} from "react";
+import { 
+  setProfileUsername,
+  setProfilePassword,
+  resetProfileForm,
+  initializeProfileForm,
+  selectProfileForm 
+} from '../../slices/authFormsSlice';
 
 const ProfilePage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { user, isAuthenticated, loading, error } = useSelector((state: RootState) => state.user);
-  
-  const [localData, setLocalData] = useState({
-    username: user?.username || '',
-    // email: user?.email || '',
-    password: '',
-  });
+  const profileForm = useSelector(selectProfileForm);
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
+      return;
     }
-  }, [isAuthenticated, navigate]);
+    
+    if (user && user.username !== profileForm.username) {
+      dispatch(initializeProfileForm({ 
+        username: user.username 
+      }));
+    }
+  }, [isAuthenticated, navigate, user, dispatch, profileForm.username]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const result = await dispatch(updateProfile(localData));
     
-    if (result.meta.requestStatus === 'fulfilled') {
-      setLocalData((prev: any) => ({ ...prev, password: '' }));
-      alert('Данные успешно обновлены!');
+    if (!profileForm.username.trim()) {
+      alert('Имя пользователя обязательно');
+      return;
+    }
+    
+    try {
+      const result = await dispatch(updateProfile({
+        username: profileForm.username,
+        password: profileForm.password
+      }));
+      
+      if (updateProfile.fulfilled.match(result)) {
+        dispatch(resetProfileForm());
+        alert('Данные успешно обновлены!');
+      }
+    } catch (err) {
+      console.error('Ошибка обновления:', err);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocalData({
-      ...localData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if (name === 'username') {
+      dispatch(setProfileUsername(value));
+    } else if (name === 'password') {
+      dispatch(setProfilePassword(value));
+    }
   };
-
-  if (!isAuthenticated) {
-    return (
-      <h2 className="auth-warning">
-        Страница недоступна. Пожалуйста, войдите в аккаунт
-      </h2>
-    );
-  }
 
   return (
     <div className="profile-page">
@@ -58,7 +73,7 @@ const ProfilePage = () => {
           <Form.Control
             type="text"
             name="username"
-            value={localData.username}
+            value={profileForm.username}
             onChange={handleChange}
           />
         </Form.Group>
@@ -78,7 +93,7 @@ const ProfilePage = () => {
           <Form.Control
             type="password"
             name="password"
-            value={localData.password}
+            value={profileForm.password}
             onChange={handleChange}
             placeholder=""
           />

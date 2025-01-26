@@ -108,16 +108,24 @@ export const { setProfileData } = userSlice.actions;
 
 // Добавим новый асинхронный экшен
 export const registerUser = createAsyncThunk(
-    'user/register',
-    async (userData: T_RegistrationData, { rejectWithValue }) => {
-      try {
-        const response = await api.user.userCreate(userData);
-        return response.data;
-      } catch (error) {
-        return rejectWithValue('Ошибка регистрации');
+  'user/register',
+  async (userData: T_RegistrationData, { rejectWithValue }) => {
+    try {
+      const response = await api.user.userCreate(userData, {
+        headers: {
+          "X-CSRFToken": getCsrfToken(),
+        },
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.data?.detail) {
+        return rejectWithValue(error.response.data.detail);
       }
+      return rejectWithValue('Ошибка регистрации');
     }
-  );
+  }
+);
 
 // update user's profile user 
 export const updateProfile = createAsyncThunk(

@@ -1,34 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { registerUser } from '../../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import './RegistrationPage.css';
+import { 
+  setRegistrationUsername,
+  setRegistrationPassword,
+  resetRegistrationForm,
+  selectRegistrationForm 
+} from '../../slices/authFormsSlice';
 
 const RegistrationPage = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    email: '',
-  });
-  
+  const formData = useSelector(selectRegistrationForm);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.user);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    switch(name) {
+      case 'username':
+        dispatch(setRegistrationUsername(value));
+        break;
+      case 'password':
+        dispatch(setRegistrationPassword(value));
+        break;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await dispatch(registerUser(formData));
     if (result.meta.requestStatus === 'fulfilled') {
+      dispatch(resetRegistrationForm());
       navigate('/login');
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   return (
@@ -48,16 +55,6 @@ const RegistrationPage = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
 
         <div className="form-group">
           <label>Пароль:</label>

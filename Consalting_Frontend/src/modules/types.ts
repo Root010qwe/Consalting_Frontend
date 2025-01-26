@@ -56,7 +56,6 @@ export type T_Login = {
 export type T_RegistrationData = {
     username: string;
     password: string;
-    email: string;
     // Добавьте другие необходимые поля
   };
 
