@@ -11,7 +11,6 @@ import "./styles.css";
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import ProfilePage from './pages/ProfilePage';
-//import RequestPage from './pages/RequestPage';
 function App() {
 
     const [services, setServices] = useState<T_Service[]>([]);
@@ -36,7 +35,6 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegistrationPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
-                       {/* <Route path="/request/:requestId" element={<RequestPage />} />*/}
                         <Route 
                             path="/services/" 
                             element={

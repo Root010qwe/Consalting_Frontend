@@ -14,7 +14,7 @@ const ProfilePage = () => {
   
   const [localData, setLocalData] = useState({
     username: user?.username || '',
-    email: user?.email || '',
+    // email: user?.email || '',
     password: '',
   });
 

@@ -22,7 +22,7 @@ const ServicePage: React.FC<ServicePageProps> = ({
     const { id } = useParams<{ id: string }>();
 
     const fetchData = async () => {
-        const url = `/api/services/${id}`;
+        const url = `/api/services/${id}/`;
         try {
             const response = await fetch(url);
             const serviceData = await response.json();
