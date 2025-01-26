@@ -30,8 +30,10 @@ const ServicePage: React.FC = () => {
     }
 
     const imageSrc = selectedService.image_url && !isMock 
-        ? selectedService.image_url 
-        : mockImage;
+    ? selectedService.image_url.startsWith('http') 
+      ? selectedService.image_url 
+      : `${process.env.REACT_APP_API_URL}${selectedService.image_url}`
+    : mockImage;
 
     return (
         <div className="service-page__container">
