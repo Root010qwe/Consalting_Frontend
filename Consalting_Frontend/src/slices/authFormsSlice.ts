@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface FormState {
   username: string;
   password: string;
+
 }
 
 interface AuthFormsState {
@@ -60,11 +61,9 @@ const authFormsSlice = createSlice({
     
     // Инициализация профиля данными пользователя
     initializeProfileForm: (state, action: PayloadAction<{username: string}>) => {
-        state.profile = {
-          ...initialState.profile,
-          username: action.payload.username
-        };
-      }
+      state.profile.username = action.payload.username;
+      state.profile.password = '';
+    }
   },
 });
 

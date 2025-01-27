@@ -1,65 +1,76 @@
-// Тип для услуги
+// Тип для услуги (синхронизирован с Api.ts -> Service)
 export type T_Service = {
-    id: number,
-    name: string,
-    description: string,
-    status: string,
-    price: string,
-    duration: number,
-    image_url: string
-};
-
-// Тип для запроса
-export type T_Request = {
-    id: number;
+    /** ID */
+    id?: number;
+    /** Name */
+    name: string;
+    /** Description */
+    description?: string | null;
+    /** Status (A=Active, D=Disabled) */
+    status?: "A" | "D";
+    /** Price (decimal) */
+    price: string;
+    /** Duration (в часах) */
+    duration?: number | null;
+    /** Image url */
+    image_url?: string | null;
+  };
+  
+  // Тип для запроса (Request из Api.ts)
+  export type T_Request = {
+    id?: number;
     client: number;
-    status: string;
-    creation_date: string;
-    completion_date: string | null;
-    manager_username: string;
-    total_cost: string;
-};
-
-// Тип для запроса на услугу
-export type T_ServiceRequest = {
-    id: number;
-    service: T_Service;
-    comment: string;
-};
-
-// Тип для деталей запроса
-export type T_RequestDetail = {
-    id: number;
-    client: string;
-    manager: string | null;
-    status: string;
-    creation_date: string;
-    completion_date: string | null;
-    service_requests: T_ServiceRequest[];
-    total_cost: string;
-};
-
-// Тип для пользователя
-export type T_User = {
-    id: number;
+    status?: "Draft" | "Submitted" | "Completed" | "Rejected" | "Deleted";
+    creation_date?: string;
+    completion_date?: string | null;
+    manager_username?: string;
+    total_cost?: string | null;
+  };
+  
+  // Тип для связи услуги и запроса (ServiceRequest из Api.ts)
+  export type T_ServiceRequest = {
+    id?: number;
+    service?: T_Service;
+    comment?: string | null;
+  };
+  
+  // Тип для детального запроса (RequestDetail из Api.ts)
+  export type T_RequestDetail = {
+    id?: number;
+    client: number;
+    manager?: number | null;
+    status?: "Draft" | "Submitted" | "Completed" | "Rejected" | "Deleted";
+    creation_date?: string;
+    completion_date?: string | null;
+    service_requests?: T_ServiceRequest[];
+    total_cost?: string | null;
+  };
+  
+  // Тип для пользователя
+  export type T_User = {
+    id?: number;
     username: string;
-    password: string; // Добавляем обязательное поле
+    password: string;
     is_staff?: boolean;
     is_superuser?: boolean;
-};
-
-// Тип для входа в систему
-export type T_Login = {
-    username: string;
-    password: string;
-};
-export type T_RegistrationData = {
-    username: string;
-    password: string;
-    // Добавьте другие необходимые поля
   };
-
-export type T_UpdateProfileData = {
+  
+  // Тип для входа в систему
+  export type T_Login = {
+    username: string;
+    password: string;
+  };
+  
+  // Тип для регистрации
+  export type T_RegistrationData = {
+    username: string;
+    password: string;
+    // Добавьте другие необходимые поля, если нужно
+  };
+  
+  // Тип для обновления профиля
+  export type T_UpdateProfileData = {
     username?: string;
     password?: string;
   };
+  

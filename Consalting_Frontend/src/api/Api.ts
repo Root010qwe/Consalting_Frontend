@@ -387,10 +387,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/requests/
      * @secure
      */
-    requestsList: (params: RequestParams = {}) =>
+    requestsList: (
+      query?: {
+        /** Начальная дата (формат: YYYY-MM-DD) */
+        start_date?: string;
+        /** Конечная дата (формат: YYYY-MM-DD) */
+        end_date?: string;
+        /** Фильтр по статусу */
+        status?: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<Request[], any>({
         path: `/requests/`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
