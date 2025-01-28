@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store.ts";
 import { RequestCard } from "../../components/ReqCard";
@@ -6,7 +6,11 @@ import {
   fetchRequestDetail,
   submitDraftRequest,
   deleteDraftRequest,
+  updateRequestFields,
+  setRequestField,
 } from "../../slices/requestDraftSlice.ts";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const RequestPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,11 +18,43 @@ const RequestPage: FC = () => {
   const navigate = useNavigate();
   const request = useAppSelector((state) => state.requestDraftSlice.request);
 
+  const contactPhone = request?.contact_phone || "";
+  const priorityLevel = request?.priority_level || "Low";
+
+  const handleChangePhone = (phone: string) => {
+    dispatch(setRequestField({ field: "contact_phone", value: phone }));
+  };
+
+  const handleChangePriority = (level: string) => {
+    dispatch(setRequestField({ field: "priority_level", value: level }));
+  };
+
   useEffect(() => {
     if (id && !request) {
       dispatch(fetchRequestDetail(id));
     }
   }, [dispatch, id, request]);
+
+  const handleSaveFields = () => {
+    if (id) {
+      dispatch(
+        updateRequestFields({
+          requestId: id,
+          contactPhone,
+          priorityLevel,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          console.log("Поля успешно обновлены!");
+          alert("Поля успешно обновлены!");
+        })
+        .catch((error) => {
+          console.error("Ошибка при обновлении полей заявки:", error);
+          alert("Не удалось обновить поля заявки.");
+        });
+    }
+  };
 
   const handleSubmitRequest = () => {
     if (id) {
@@ -27,7 +63,7 @@ const RequestPage: FC = () => {
         .then(() => {
           console.log("Заявка успешно сформирована!");
           alert("Заявка успешно сформирована!");
-          navigate("/requests"); // Переход на страницу списка заявок
+          navigate("/requests");
         })
         .catch((error) => {
           console.error("Ошибка при формировании заявки:", error);
@@ -44,7 +80,7 @@ const RequestPage: FC = () => {
           .then(() => {
             console.log("Заявка успешно удалена!");
             alert("Заявка успешно удалена!");
-            navigate("/requests"); // Переход на страницу списка заявок
+            navigate("/requests");
           })
           .catch((error) => {
             console.error("Ошибка при удалении заявки:", error);
@@ -71,7 +107,7 @@ const RequestPage: FC = () => {
           <div className="line">
             <hr />
           </div>
-          <h2 className="title">В обработке</h2>
+          <h2 className="title">Заявка в обработке</h2>
           {isDraft && (
             <div className="d-flex justify-content-end gap-2 my-3">
               <button className="btn btn-primary" onClick={handleSubmitRequest}>
@@ -83,6 +119,56 @@ const RequestPage: FC = () => {
             </div>
           )}
         </div>
+        {isDraft && (
+          <div className="mb-3">
+            <h4>Дополнительные поля заявки</h4>
+            <div className="mb-2">
+              <label htmlFor="contactPhone">Контактный телефон:</label>
+              <PhoneInput
+                country={"ru"}
+                value={contactPhone}
+                onChange={handleChangePhone}
+                inputStyle={{
+                  width: "250px",
+                  height: "40px",
+                  fontSize: "14px",
+                  paddingLeft: "48px",
+                }}
+                buttonStyle={{
+                  display: "none",
+                }}
+              />
+            </div>
+
+            <div>
+              <label>Уровень приоритета:</label>
+              <div className="d-flex gap-3">
+                {["Low", "Medium", "High"].map((level) => (
+                  <div key={level} className="form-check">
+                    <input
+                      type="radio"
+                      id={`priority-${level}`}
+                      className="form-check-input"
+                      name="priorityLevel"
+                      value={level}
+                      checked={priorityLevel === level}
+                      onChange={() => handleChangePriority(level)}
+                    />
+                    <label
+                      htmlFor={`priority-${level}`}
+                      className="form-check-label"
+                    >
+                      {level}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button className="btn btn-success mt-3" onClick={handleSaveFields}>
+              Сохранить
+            </button>
+          </div>
+        )}
         <div className="row">
           <div className="col-12">
             <div className="d-flex justify-content-between"></div>

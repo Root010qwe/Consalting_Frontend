@@ -65,6 +65,19 @@ export interface Request {
    * @format decimal
    */
   total_cost?: string | null;
+  /** Priority level */
+  priority_level?: "Low" | "Medium" | "High";
+  /**
+   * Formed date
+   * @format date-time
+   */
+  formed_date?: string | null;
+  /**
+   * Contact phone
+   * Контактный номер телефона
+   * @maxLength 15
+   */
+  contact_phone?: string | null;
 }
 
 export interface Service {
@@ -391,6 +404,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
           manager?: string;
           /** Статус заявки */
           status?: string;
+          /** Уровень приоритета */
+          priority_level?: string;
+          /**
+           * Дата формирования
+           * @format date-time
+           */
+          formed_date?: string;
+          /** Контактный телефон клиента */
+          contact_phone?: string;
           /**
            * Дата создания
            * @format date-time
@@ -470,7 +492,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Удаляет заявку только если она в статусе Draft
+     * @description Удаляет заявку только если она в статусе Draft. Доступно автору заявки или администратору.
      *
      * @tags requests
      * @name RequestsDeleteDelete
@@ -498,6 +520,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/requests/${id}/form/`,
         method: "PUT",
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Обновляет дополнительные поля заявки (contact_phone, priority_level)
+     *
+     * @tags requests
+     * @name RequestsUpdateFieldsUpdate
+     * @request PUT:/requests/{id}/update-fields/
+     * @secure
+     */
+    requestsUpdateFieldsUpdate: (
+      id: string,
+      data: {
+        /** Контактный телефон */
+        contact_phone: string;
+        /** Уровень приоритета заявки */
+        priority_level: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, void>({
+        path: `/requests/${id}/update-fields/`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 

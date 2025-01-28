@@ -145,6 +145,41 @@ export const updateServiceComment = createAsyncThunk<
   }
 );
 
+// Обновление полей заявки (contact_phone и priority_level)
+export const updateRequestFields = createAsyncThunk<
+  void,
+  { requestId: string; contactPhone: string; priorityLevel: string }
+>(
+  "requests/updateRequestFields",
+  async (
+    { requestId, contactPhone, priorityLevel },
+    { rejectWithValue, dispatch }
+  ) => {
+    try {
+      await api.requests.requestsUpdateFieldsUpdate(
+        requestId,
+        {
+          contact_phone: contactPhone,
+          priority_level: priorityLevel,
+        },
+        {
+          headers: {
+            "X-CSRFToken": getCsrfToken(), // Добавление CSRF токена
+          },
+          withCredentials: true, // Учет авторизации
+        }
+      );
+      console.log(`Поля заявки ${requestId} успешно обновлены.`);
+
+      // Перезагружаем данные заявки после обновления
+      dispatch(fetchRequestDetail(requestId));
+    } catch (error) {
+      console.error("Ошибка при обновлении полей заявки:", error);
+      return rejectWithValue("Ошибка при обновлении полей заявки.");
+    }
+  }
+);
+
 // Перевод черновой заявки в статус 'Submitted'
 // Перевод черновой заявки в статус 'Submitted'
 export const submitDraftRequest = createAsyncThunk<void, string>(
@@ -200,6 +235,14 @@ const requestDraftSlice = createSlice({
     },
     setFilters: (state, action: PayloadAction<RequestDraftFilters>) => {
       state.filters = action.payload;
+    },
+    setRequestField: (
+      state,
+      action: PayloadAction<{ field: string; value: string }>
+    ) => {
+      if (state.request) {
+        (state.request as any)[action.payload.field] = action.payload.value;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -278,6 +321,12 @@ const requestDraftSlice = createSlice({
   },
 });
 
-export const { setAppId, setCount, clearDraft, setFilters, setServiceData } =
-  requestDraftSlice.actions;
+export const {
+  setAppId,
+  setCount,
+  clearDraft,
+  setFilters,
+  setServiceData,
+  setRequestField,
+} = requestDraftSlice.actions;
 export default requestDraftSlice.reducer;
