@@ -1,17 +1,18 @@
 import { FC, MouseEvent } from "react";
-import "./ServiceCard.css"; 
+import "./ServiceCard.css";
 import { T_Service } from "../../modules/types.ts";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store.ts";
 import { addServiceToDraft } from "../../slices/serviceSlice.ts";
 import mockImage from "src/assets/5.png";
+import { fetchRequestDetail } from "../../slices/requestDraftSlice.ts";
 
 interface ServiceCardProps {
   service: T_Service;
   isMock: boolean;
   imageClickHandler?: () => void;
-  // Вызывается после успешного добавления в черновик, если нужно
-  onAddToDraft?: () => void;
+  onAddToDraft?: () => void; // Дополнительный коллбэк для уведомления родителя
+  requestId?: string;
 }
 
 export const ServiceCard: FC<ServiceCardProps> = ({
@@ -19,6 +20,7 @@ export const ServiceCard: FC<ServiceCardProps> = ({
   isMock,
   imageClickHandler,
   onAddToDraft,
+  requestId,
 }) => {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
@@ -26,19 +28,21 @@ export const ServiceCard: FC<ServiceCardProps> = ({
   // Выбираем изображение
   const imageSrc = service.image_url && !isMock ? service.image_url : mockImage;
 
-  // При клике на "Добавить" вызываем addServiceToDraft
+  // При клике на "Добавить"
   const handleAddClick = async (e: MouseEvent) => {
-    // Останавливаем всплытие, чтобы не срабатывал onClick на родительском <div>
     e.stopPropagation();
 
-    // Преобразуем service.id в строку, если нужно
     if (service.id !== undefined) {
-      await dispatch(addServiceToDraft(String(service.id)));
-      
+      try {
+        await dispatch(addServiceToDraft(String(service.id)));
+        if (requestId) await dispatch(fetchRequestDetail("" + requestId));
 
-      // Если нужно вызвать дополнительную логику
-      if (onAddToDraft) {
-        onAddToDraft();
+        // Уведомляем родительский компонент, если требуется
+        if (onAddToDraft) {
+          onAddToDraft();
+        }
+      } catch (error) {
+        console.error("Ошибка при добавлении услуги:", error);
       }
     }
   };
@@ -49,7 +53,6 @@ export const ServiceCard: FC<ServiceCardProps> = ({
         className="service-card__image"
         src={imageSrc}
         alt="Изображение услуги"
-        onClick={imageClickHandler}
       />
       <div className="service-card__body">
         <h5 className="service-card__title">{service.name}</h5>

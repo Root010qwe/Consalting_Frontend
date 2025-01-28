@@ -1,10 +1,10 @@
 // Consalting_Frontend\src\store.ts
-import { configureStore } from '@reduxjs/toolkit';
-import serviceReducer from './slices/serviceSlice';
-import userReducer from './slices/userSlice';
-import requestDraftSlice from './slices/requestDraftSlice';
-import authFormsReducer from './slices/authFormsSlice';
-import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import serviceReducer from "./slices/serviceSlice";
+import userReducer from "./slices/userSlice";
+import requestDraftSlice from "./slices/requestDraftSlice";
+import authFormsReducer from "./slices/authFormsSlice";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {

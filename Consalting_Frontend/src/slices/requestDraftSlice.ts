@@ -90,13 +90,12 @@ export const deleteDraftRequest = createAsyncThunk<void, string>(
 );
 
 // Удаление услуги из заявки
-// Удаление услуги из заявки
 export const removeServiceFromRequest = createAsyncThunk<
   void,
   { requestId: string; serviceId: string }
 >(
   "requests/removeServiceFromRequest",
-  async ({ requestId, serviceId }, { rejectWithValue }) => {
+  async ({ requestId, serviceId }, { rejectWithValue, dispatch }) => {
     try {
       await api.requestItems.requestItemsDeleteDelete(requestId, serviceId, {
         headers: {
@@ -107,6 +106,7 @@ export const removeServiceFromRequest = createAsyncThunk<
       console.log(
         `Услуга ${serviceId} успешно удалена из заявки ${requestId}.`
       );
+      dispatch(fetchRequestDetail("" + requestId));
     } catch (error) {
       console.log(error);
       return rejectWithValue("Ошибка при удалении услуги из заявки.");
@@ -235,12 +235,13 @@ const requestDraftSlice = createSlice({
     // builder.addCase(removeServiceFromRequest.fulfilled, (state, action) => {
     //   const { requestId, serviceId } = action.meta.arg;
 
-    //   Удаляем услугу из текущей заявки
-    //   if (state.request && state.request.id?.toString() === requestId) {
-    //     state.request.service_requests = state.request.service_requests?.filter(
-    //       (serviceRequest) => serviceRequest.id?.toString() !== serviceId
-    //     );
-    //   }
+    //   // Удаляем услугу из текущей заявки
+    //   // if (state.request && state.request.id?.toString() === requestId) {
+    //   //   state.request.service_requests = state.request.service_requests?.filter(
+    //   //     (serviceRequest) => serviceRequest.id?.toString() !== serviceId
+    //   //   );
+    //   // }
+    //   dispatch(fetchRequestDetail(id));
 
     //   console.log(`Услуга ${serviceId} удалена из заявки ${requestId}`);
     // });

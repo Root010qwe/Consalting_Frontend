@@ -7,6 +7,7 @@ import {
   setServiceData,
   updateServiceComment,
   removeServiceFromRequest,
+  fetchRequestDetail,
 } from "../../slices/requestDraftSlice.ts";
 
 const defaultImage = "src/assets/5.png";

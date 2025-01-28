@@ -12,11 +12,17 @@ import { Link, useNavigate } from "react-router-dom";
 const ServicesListPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { serviceName, filteredServices, isMock, loading } = useSelector((state: RootState) => state.services);
+  const { serviceName, filteredServices, isMock, loading } = useSelector(
+    (state: RootState) => state.services
+  );
   const [localServiceName, setLocalServiceName] = useState(serviceName);
 
-  const { app_id, count } = useSelector((state: RootState) => state.requestDraftSlice);
-  const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
+  const { app_id, count } = useSelector(
+    (state: RootState) => state.requestDraftSlice
+  );
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.user.isAuthenticated
+  );
 
   // Очистка корзины
   const handleClearBasket = () => {
@@ -25,7 +31,7 @@ const ServicesListPage: React.FC = () => {
 
   // Обработчик перехода на страницу заявки
   const handleBasketClick = () => {
-    console.log(app_id)
+    console.log(app_id);
     if (app_id) {
       navigate(`/request/${app_id}`);
     }
@@ -54,7 +60,11 @@ const ServicesListPage: React.FC = () => {
                 />
               </Col>
               <Col>
-                <Button color="primary" className="w-100 search-btn" type="submit">
+                <Button
+                  color="primary"
+                  className="w-100 search-btn"
+                  type="submit"
+                >
                   Поиск
                 </Button>
               </Col>
@@ -81,7 +91,12 @@ const ServicesListPage: React.FC = () => {
           <div>Загрузка...</div>
         ) : (
           filteredServices.map((service) => (
-            <ServiceCard key={service.id} service={service} isMock={isMock} />
+            <ServiceCard
+              key={service.id}
+              service={service}
+              isMock={isMock}
+              requestId={"" + app_id}
+            />
           ))
         )}
       </div>
