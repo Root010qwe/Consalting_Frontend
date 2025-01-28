@@ -101,41 +101,6 @@ export interface Service {
   image_url?: string | null;
 }
 
-export interface ServiceRequest {
-  /** ID */
-  id?: number;
-  service?: Service;
-  /** Comment */
-  comment?: string | null;
-}
-
-export interface RequestDetail {
-  /** ID */
-  id?: number;
-  /** Client */
-  client: number;
-  /** Manager */
-  manager?: number | null;
-  /** Status */
-  status?: "Draft" | "Submitted" | "Completed" | "Rejected" | "Deleted";
-  /**
-   * Creation date
-   * @format date-time
-   */
-  creation_date?: string;
-  /**
-   * Completion date
-   * @format date-time
-   */
-  completion_date?: string | null;
-  service_requests?: ServiceRequest[];
-  /**
-   * Total cost
-   * @format decimal
-   */
-  total_cost?: string | null;
-}
-
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
 import axios from "axios";
 
@@ -416,7 +381,62 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     requestsRead: (id: string, params: RequestParams = {}) =>
-      this.request<RequestDetail, void>({
+      this.request<
+        {
+          /** ID заявки */
+          id?: number;
+          /** Имя клиента */
+          client?: string;
+          /** Имя менеджера (может быть null) */
+          manager?: string;
+          /** Статус заявки */
+          status?: string;
+          /**
+           * Дата создания
+           * @format date-time
+           */
+          creation_date?: string;
+          /**
+           * Дата завершения (может быть null)
+           * @format date-time
+           */
+          completion_date?: string;
+          service_requests?: {
+            /** ID услуги в заявке */
+            id?: number;
+            service?: {
+              /** ID услуги */
+              id?: number;
+              /** Название услуги */
+              name?: string;
+              /** Описание услуги */
+              description?: string;
+              /** Статус услуги */
+              status?: string;
+              /**
+               * Цена услуги
+               * @format decimal
+               */
+              price?: string;
+              /** Продолжительность услуги в часах */
+              duration?: number;
+              /**
+               * Ссылка на изображение услуги
+               * @format uri
+               */
+              image_url?: string;
+            };
+            /** Комментарий к услуге (может быть пустым) */
+            comment?: string;
+          }[];
+          /**
+           * Общая стоимость заявки
+           * @format decimal
+           */
+          total_cost?: string;
+        },
+        void
+      >({
         path: `/requests/${id}/`,
         method: "GET",
         secure: true,

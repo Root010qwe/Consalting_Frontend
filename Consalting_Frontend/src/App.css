@@ -41,13 +41,12 @@
   color: #888;
 }
 
-
 :root {
   --bg: #000;
   --card-bg: #414141;
-  --card-border-color: rgba(0, 0, 0, .125);
+  --card-border-color: rgba(0, 0, 0, 0.125);
   --color: #fff;
-  --header-bg: #2684E6;
+  --header-bg: #2684e6;
   --header-color: #fff;
   --primary-btn-bg: #000;
   --primary-btn-color: #fff;
@@ -67,11 +66,13 @@
   background-color: var(--header-bg);
 }
 
-.nav-link, .navbar-brand{
+.nav-link,
+.navbar-brand {
   color: var(--header-color) !important;
 }
 
-.nav-link:hover, .navbar-brand:hover{
+.nav-link:hover,
+.navbar-brand:hover {
   color: hsl(from var(--header-color) h s calc(l - 10)) !important;
 }
 
@@ -92,7 +93,9 @@
   text-transform: uppercase;
   font-weight: 500;
   font-style: normal;
-  font: 14px / 28px DIN Condensed, sans-serif;
+  font:
+    14px / 28px DIN Condensed,
+    sans-serif;
 }
 
 .cards-wrapper .card {
@@ -133,10 +136,10 @@
 }
 
 .custom-height-img {
-  width: 100%;      /* Ширина изображения будет автоматически подстраиваться */
-  height: 100%;       /* Высота изображения будет равна высоте контейнера */
-  object-fit: cover;  /* Обрезать изображение по ширине, сохраняя пропорции */
-  padding: 0;         /* Убираем отступы */
+  width: 100%; /* Ширина изображения будет автоматически подстраиваться */
+  height: 100%; /* Высота изображения будет равна высоте контейнера */
+  object-fit: cover; /* Обрезать изображение по ширине, сохраняя пропорции */
+  padding: 0; /* Убираем отступы */
 }
 
 .ship-preview {
@@ -146,7 +149,7 @@
 }
 
 .custom-card {
-  height: 300px ; 
+  height: 300px;
 }
 
 .ship-image {
@@ -155,9 +158,8 @@
 
 .custom-inf-card-style {
   padding-top: 30px !important;
-  padding-left: 50px !important; 
+  padding-left: 50px !important;
 }
-
 
 main {
   display: flex;
@@ -166,7 +168,7 @@ main {
   padding: 25px 0;
 }
 
-.bin.btn-primary  {
+.bin.btn-primary {
   background-color: var(--bin-bg) !important;
   color: var(--bin-color) !important;
 }
@@ -223,6 +225,3 @@ main {
 .card-btns .btn {
   width: 50%;
 }
-
-
-

@@ -25,6 +25,7 @@ export type T_Service = {
     completion_date?: string | null;
     manager_username?: string;
     total_cost?: string | null;
+    services: T_Service[];
   };
   
   // Тип для связи услуги и запроса (ServiceRequest из Api.ts)
@@ -44,6 +45,7 @@ export type T_Service = {
     completion_date?: string | null;
     service_requests?: T_ServiceRequest[];
     total_cost?: string | null;
+    services: T_Service[];
   };
   
   // Тип для пользователя

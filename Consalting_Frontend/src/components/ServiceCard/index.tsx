@@ -1,20 +1,14 @@
 import { FC, MouseEvent } from "react";
-import "./ServiceCard.css"; // Ваши стили
+import "./ServiceCard.css"; 
 import { T_Service } from "../../modules/types.ts";
 import { Link } from "react-router-dom";
-
-// Импортируйте ваши хука для dispatch и selector
 import { useAppDispatch, useAppSelector } from "../../store.ts";
-// Импортируем thunk из вашего слайса
 import { addServiceToDraft } from "../../slices/serviceSlice.ts";
-
-// Заглушка для картинки, если нужно
 import mockImage from "src/assets/5.png";
 
 interface ServiceCardProps {
   service: T_Service;
   isMock: boolean;
-  // Обработка клика по изображению (необязательно)
   imageClickHandler?: () => void;
   // Вызывается после успешного добавления в черновик, если нужно
   onAddToDraft?: () => void;

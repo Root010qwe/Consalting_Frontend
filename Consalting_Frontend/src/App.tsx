@@ -11,7 +11,9 @@ import "./styles.css";
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import ProfilePage from './pages/ProfilePage';
-
+import ForbiddenPage from './pages/403/ForbiddenPage.tsx';
+import NotFoundPage from './pages/404/NotFoundPage.tsx';
+import RequestPage from './pages/RequestPage'
 function App() {
 
     const [services, setServices] = useState<T_Service[]>([]);
@@ -36,7 +38,11 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegistrationPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
-
+                        <Route path="/403" element={<ForbiddenPage />} />
+                        <Route path="/404" element={<NotFoundPage />} />
+                        <Route path="*" element={<NotFoundPage />} />
+                        <Route path="/request/:id" element={<RequestPage />} 
+/>
                         <Route 
                             path="/services/" 
                             element={

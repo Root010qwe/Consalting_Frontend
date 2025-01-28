@@ -52,10 +52,10 @@ export const addServiceToDraft = createAsyncThunk<void, string, { state: RootSta
       
       // Предполагаем, что сервер возвращает объект { services, count, draft_vacancy_application }
       const data = response.data;
-
+      console.log(data);
       // Извлекаем нужные поля
-      const app_id = data.draft_vacancy_application;
-      const count = data.count;
+      const app_id = data.draft_request_id;
+      const count = data.services_in_draft_request;
       const services = data.services as T_Service[];
 
       // Диспатчим в стор доп. данные
@@ -74,7 +74,7 @@ export const addServiceToDraft = createAsyncThunk<void, string, { state: RootSta
 export const fetchServiceById = createAsyncThunk<
   { data: T_Service; isMock: boolean },  // тип результата
   string                                 // входной параметр (id)
->("services/fetchServiceById", async (id, { rejectWithValue }) => {
+>("services/fetchServiceById", async (id, {  }) => {
   try {
     // Запрос через кодогенерированный метод
     // Возвращаемый тип — AxiosResponse<Service>
