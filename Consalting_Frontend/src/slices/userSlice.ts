@@ -29,6 +29,7 @@ export const loginUser = createAsyncThunk(
   async (credentials: T_Login, { rejectWithValue }) => {
     try {
       const response = await api.api.apiUsersLoginCreate(credentials);
+      console.log('Login response:', response.data); // Для отладки
       return response.data;
     } catch (error) {
       return rejectWithValue("Ошибка авторизации");
@@ -63,10 +64,11 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.fulfilled, (state, { payload }: any) => {
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.user = payload;
         state.isAuthenticated = true;
         state.error = null;
+        console.log('User state after login:', state.user); // Для отладки
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload as string;

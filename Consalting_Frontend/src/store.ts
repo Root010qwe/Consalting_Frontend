@@ -5,6 +5,7 @@ import userReducer from "./slices/userSlice";
 import requestDraftSlice from "./slices/requestDraftSlice";
 import authFormsReducer from "./slices/authFormsSlice";
 import requestSlice from "./slices/requestSlice";
+import moderSlice from "./slices/moderSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
     requestDraftSlice: requestDraftSlice,
     authForms: authFormsReducer, // добавляем новый редьюсер
     requests: requestSlice,
+    moder: moderSlice,
   },
 });
 

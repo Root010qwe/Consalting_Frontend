@@ -15,6 +15,8 @@ import ForbiddenPage from "./pages/403/ForbiddenPage.tsx";
 import NotFoundPage from "./pages/404/NotFoundPage.tsx";
 import RequestPage from "./pages/RequestPage";
 import RequestsPage from "./pages/RequestsPage";
+import ModerServicesPage from "./pages/ModerServicesPage";
+import ServicesEditPage from './pages/ServicesEditPage';
 function App() {
   const [services, setServices] = useState<T_Service[]>([]);
 
@@ -45,6 +47,8 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/request/:id" element={<RequestPage />} />
             <Route path="/requests/" element={<RequestsPage />} />
+            <Route path="/moder-services/" element={<ModerServicesPage />} />
+            <Route path="/moder/services/edit/:id" element={<ServicesEditPage />} />
             <Route
               path="/services/"
               element={

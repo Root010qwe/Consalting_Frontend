@@ -11,6 +11,11 @@ const Header = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { isAuthenticated, user } = useSelector((state: RootState) => state.user);
     const username = user?.username;
+    
+    const isModerator = Boolean(user?.is_staff || user?.is_superuser);
+
+    console.log('User data:', user);
+    console.log('Is moderator:', isModerator);
 
     const toggle = () => setIsOpen(!isOpen);
 
@@ -25,7 +30,7 @@ const Header = () => {
             <Collapse isOpen={isOpen} navbar className="justify-content-end">
                 <Nav navbar className="header-nav">
                     <NavItem>
-                        <NavLink to="/" end  className="nav-link">
+                        <NavLink to="/" end className="nav-link">
                             Главная
                         </NavLink>
                     </NavItem>
@@ -35,8 +40,28 @@ const Header = () => {
                         </NavLink>
                     </NavItem>
 
+                    {isAuthenticated && isModerator && (
+                        <>
+                            <NavItem>
+                                <NavLink to="/moder-services" className="nav-link">
+                                    Редактор Услуг
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/moder-requests" className="nav-link">
+                                    Редактор Заявок
+                                </NavLink>
+                            </NavItem>
+                        </>
+                    )}
+
                     {isAuthenticated ? (
                         <>
+                            <NavItem>
+                                <NavLink to="/requests" className="nav-link">
+                                    Мои заявки
+                                </NavLink>
+                            </NavItem>
                             <NavItem>
                                 <NavLink to="/profile" className="nav-link">
                                     {username}

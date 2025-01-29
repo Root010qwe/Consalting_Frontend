@@ -36,6 +36,10 @@ export interface User {
    * @minLength 1
    */
   password: string;
+  /** Является ли пользователь менеджером? */
+  is_staff?: boolean;
+  /** Является ли пользователь админом? */
+  is_superuser?: boolean;
 }
 
 export interface Request {
