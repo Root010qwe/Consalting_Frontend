@@ -1,60 +1,133 @@
-.service-page__container {
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Две колонки: изображение и текст */
-    gap: 20px;
-    align-items: start;
-}
-
-/* Стили для изображения */
-.service-page__image {
-    max-width: 100%;
+.service-details-card {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--card-border-color) !important;
     border-radius: 10px;
-    object-fit: cover;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Стили для текста */
-.service-page__info {
+.service-page__container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 2rem;
 }
 
-.service-page__info h1 {
+.service-page__image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.service-page__image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.service-page__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.service-page__title {
+    color: var(--text-color);
     font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
 }
 
-.service-page__info p {
-    font-size: 1rem;
-    line-height: 1.5;
+.service-page__details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.service-page__description h4,
+.service-page__meta h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.service-page__description p {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.service-page__meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.service-page__price,
+.service-page__duration {
+    padding: 1rem;
+    background-color: rgba(13, 110, 253, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.service-page__price p,
+.service-page__duration p {
+    color: var(--text-color);
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0;
 }
 
 /* Адаптивность */
-@media (max-width: 992px) {
+@media (min-width: 768px) {
     .service-page__container {
-        grid-template-columns: 1fr; /* Одна колонка для среднего экрана */
-        gap: 15px;
+        flex-direction: row;
+        align-items: flex-start;
     }
 
-    .service-page__info h1 {
-        font-size: 1.8rem;
+    .service-page__image-container {
+        width: 40%;
     }
 
-    .service-page__info p {
-        font-size: 0.95rem;
+    .service-page__info {
+        width: 60%;
     }
 }
 
-@media (max-width: 768px) {
-    .service-page__container {
-        padding: 15px;
+@media (max-width: 767px) {
+    .service-details-card {
+        padding: 1rem;
     }
 
-    .service-page__info h1 {
+    .service-page__title {
         font-size: 1.5rem;
     }
 
-    .service-page__info p {
-        font-size: 0.9rem;
+    .service-page__image {
+        max-width: 100%;
+    }
+
+    .service-page__meta {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Анимации */
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

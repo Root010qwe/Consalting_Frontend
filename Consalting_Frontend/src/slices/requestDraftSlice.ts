@@ -6,6 +6,9 @@ import { AxiosResponse } from "axios";
 import { RootState } from "@reduxjs/toolkit/query";
 import { getCsrfToken } from "../modules/Utils";
 
+// Определяем тип для priority_level
+type PriorityLevel = "Low" | "Medium" | "High";
+
 interface RequestDraftFilters {
   start_date: string; // Начальная дата
   end_date: string; // Конечная дата
@@ -148,7 +151,7 @@ export const updateServiceComment = createAsyncThunk<
 // Обновление полей заявки (contact_phone и priority_level)
 export const updateRequestFields = createAsyncThunk<
   void,
-  { requestId: string; contactPhone: string; priorityLevel: string }
+  { requestId: string; contactPhone: string; priorityLevel: PriorityLevel }
 >(
   "requests/updateRequestFields",
   async (
@@ -164,14 +167,12 @@ export const updateRequestFields = createAsyncThunk<
         },
         {
           headers: {
-            "X-CSRFToken": getCsrfToken(), // Добавление CSRF токена
+            "X-CSRFToken": getCsrfToken(),
           },
-          withCredentials: true, // Учет авторизации
+          withCredentials: true,
         }
       );
       console.log(`Поля заявки ${requestId} успешно обновлены.`);
-
-      // Перезагружаем данные заявки после обновления
       dispatch(fetchRequestDetail(requestId));
     } catch (error) {
       console.error("Ошибка при обновлении полей заявки:", error);
@@ -238,10 +239,15 @@ const requestDraftSlice = createSlice({
     },
     setRequestField: (
       state,
-      action: PayloadAction<{ field: string; value: string }>
+      action: PayloadAction<{ field: string; value: string | PriorityLevel }>
     ) => {
       if (state.request) {
-        (state.request as any)[action.payload.field] = action.payload.value;
+        const { field, value } = action.payload;
+        if (field === "contact_phone") {
+          state.request.contact_phone = value as string;
+        } else if (field === "priority_level") {
+          state.request.priority_level = value as PriorityLevel;
+        }
       }
     },
   },
@@ -266,10 +272,12 @@ const requestDraftSlice = createSlice({
     // Обработка deleteDraftRequest
     builder.addCase(deleteDraftRequest.fulfilled, (state, action) => {
       console.log("Draft request deleted successfully.");
-      // Удаляем заявку из состояния
-      state.requests = state.requests.filter(
-        (request) => request.id?.toString() !== action.meta.arg
-      );
+      if (state.request && state.request.id?.toString() === action.meta.arg) {
+        state.request = null;
+      }
+      // Очищаем состояние после успешного удаления
+      state.app_id = undefined;
+      state.count = undefined;
     });
     builder.addCase(deleteDraftRequest.rejected, (_, action) => {
       console.error("Ошибка при удалении заявки:", action.payload);
@@ -305,18 +313,27 @@ const requestDraftSlice = createSlice({
     // Обработка submitDraftRequest
     builder.addCase(submitDraftRequest.fulfilled, (state, action) => {
       console.log("Заявка успешно переведена в статус 'Submitted'.");
-      const requestIndex = state.requests.findIndex(
-        (req) => req.id?.toString() === action.meta.arg
-      );
-      if (requestIndex >= 0) {
-        state.requests[requestIndex].status = "Submitted";
+      if (state.request && state.request.id?.toString() === action.meta.arg) {
+        state.request.status = "Submitted";
       }
+      // Очищаем состояние после успешного сабмита
+      state.app_id = undefined;
+      state.count = undefined;
     });
     builder.addCase(submitDraftRequest.rejected, (_, action) => {
       console.error(
         "Ошибка при переводе заявки в статус 'Submitted':",
         action.payload
       );
+    });
+
+    // Добавляем новый редьюсер для обновления полей заявки
+    builder.addCase(updateRequestFields.fulfilled, (state, action) => {
+      const { requestId, contactPhone, priorityLevel } = action.meta.arg;
+      if (state.request && state.request.id?.toString() === requestId) {
+        state.request.contact_phone = contactPhone;
+        state.request.priority_level = priorityLevel;
+      }
     });
   },
 });

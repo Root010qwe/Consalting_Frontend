@@ -49,10 +49,11 @@ const RequestCard: React.FC<RequestCardProps> = ({
     <div className="request-row" onClick={onClick}>
       <div className="cell request-id">{id}</div>
       <div className="cell status">{getStatusText(status)}</div>
-      <div className="cell priority-level">{getPriorityText(priority_level)}</div>
       <div className="cell date-formed">
         {formedAt ? new Date(formedAt).toLocaleDateString('ru-RU') : "—"}
       </div>
+      <div className="cell priority-level">{getPriorityText(priority_level)}</div>
+
       <div className="cell total-cost">
         {totalCost ? `${Number(totalCost).toLocaleString('ru-RU')} ₽` : "—"}
       </div>

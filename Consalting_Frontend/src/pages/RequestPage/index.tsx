@@ -154,7 +154,7 @@ const RequestPage: FC = () => {
             <hr />
           </div>
           <h2 className="title">Заявка в обработке</h2>
-          <div className="d-flex justify-content-end gap-2 my-3">
+          <div className="d-flex justify-content-center gap-2 my-3">
             <button 
               className="btn btn-info"
               onClick={handleViewClientRequests}
@@ -173,11 +173,10 @@ const RequestPage: FC = () => {
             )}
           </div>
         </div>
-        {isDraft && (
-          <div className="mb-3">
-            <h4>Дополнительные поля заявки</h4>
-            <div className="mb-2">
-              <label htmlFor="contactPhone">Контактный телефон:</label>
+        <div className="mb-3">
+          <div className="mb-2">
+            <label htmlFor="contactPhone">Контактный телефон:</label>
+            {isDraft ? (
               <PhoneInput
                 country={"ru"}
                 value={contactPhone}
@@ -192,10 +191,14 @@ const RequestPage: FC = () => {
                   display: "none",
                 }}
               />
-            </div>
+            ) : (
+              <div className="readonly-value">{contactPhone || "Не указан"}</div>
+            )}
+          </div>
 
-            <div>
-              <label>Уровень приоритета:</label>
+          <div>
+            <label>Уровень приоритета:</label>
+            {isDraft ? (
               <div className="d-flex gap-3">
                 {["Low", "Medium", "High"].map((level) => (
                   <div key={level} className="form-check">
@@ -217,12 +220,17 @@ const RequestPage: FC = () => {
                   </div>
                 ))}
               </div>
-            </div>
-            <button className="btn btn-success mt-3" onClick={handleSaveFields}>
+            ) : (
+              <div className="priority-readonly">{priorityLevel}</div>
+            )}
+          </div>
+          
+          {isDraft && (
+            <button className="btn btn-primary" onClick={handleSaveFields}>
               Сохранить
             </button>
-          </div>
-        )}
+          )}
+        </div>
         <div className="row">
           <div className="col-12">
             <div className="d-flex justify-content-between"></div>

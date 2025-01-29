@@ -32,7 +32,7 @@ function App() {
       <Header />
       <Container className="pt-4">
         <Row className="mb-3">
-          <Breadcrumbs selectedService={selectedService} />
+          <Breadcrumbs/>
         </Row>
         <Row>
           <Routes>

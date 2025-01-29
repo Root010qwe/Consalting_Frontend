@@ -40,3 +40,14 @@
 .service-card__button {
     align-self: center;
 }
+
+.service-card__actions {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.service-card__actions .btn {
+    flex: 1;
+    text-align: center;
+}

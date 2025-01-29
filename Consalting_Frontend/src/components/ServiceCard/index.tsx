@@ -65,7 +65,7 @@ export const ServiceCard: FC<ServiceCardProps> = ({
 
           {isAuthenticated && (
             <button
-              className="btn btn-outline-dark btn-sm"
+              className="btn btn-primary"
               type="button"
               onClick={handleAddClick}
             >

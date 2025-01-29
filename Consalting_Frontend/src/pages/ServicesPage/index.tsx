@@ -71,21 +71,21 @@ const ServicesListPage: React.FC = () => {
             </Row>
           </Form>
         </Col>
-        <Col md="2" className="d-flex align-items-center">
-          <Button
-            className="basket-btn position-relative"
-            disabled={!isAuthenticated}
-            onClick={handleBasketClick} // Добавлен обработчик перехода
-          >
-            <img src={basketIcon} alt="Корзина" width="24" />
-            {isAuthenticated && app_id && count !== undefined && (
-              <span className="basket-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {count}
-              </span>
-            )}
-          </Button>
-        </Col>
       </Row>
+      
+      <Button
+        className="basket-btn-fixed"
+        disabled={!isAuthenticated}
+        onClick={handleBasketClick}
+      >
+        <img src={basketIcon} alt="Корзина" width="32" />
+        {isAuthenticated && app_id && count !== undefined && (
+          <span className="basket-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {count}
+          </span>
+        )}
+      </Button>
+      
       <div className="services-page__cards">
         {loading ? (
           <div>Загрузка...</div>

@@ -56,3 +56,55 @@
     font-size: 0.75rem !important;
     min-width: 1.25rem !important;
   }
+
+/* Позиционированная корзина */
+.basket-btn-fixed {
+    position: absolute !important;
+    right: 30px !important;
+    top: 90px !important;
+    z-index: 1000 !important;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 15px !important;
+    background-color: var(--search-bg) !important;
+    border-color: var(--search-border) !important;
+    color: var(--search-color) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.basket-btn-fixed:hover {
+    background-color: var(--primary-btn-bg--hover) !important;
+    border-color: var(--primary-btn-border--hover) !important;
+    color: var(--primary-btn-color--hover) !important;
+    transform: scale(1.05) !important;
+    transition: transform 0.2s ease !important;
+}
+
+.basket-btn-fixed:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+/* Адаптивность для корзины */
+@media (max-width: 768px) {
+    .basket-btn-fixed {
+        right: 20px !important;
+        top: 90px !important;
+        width: 50px !important;
+        height: 50px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .basket-btn-fixed {
+        right: 15px !important;
+        top: 90px !important;
+        width: 45px !important;
+        height: 45px !important;
+    }
+}

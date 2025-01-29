@@ -1,7 +1,7 @@
 /* Container styles */
 .request-container {
   padding: 20px;
-  background-color: #f9f9f9;
+
   border-radius: 8px;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .request-data .head .line hr {
-  border: 1px solid #0e78e3;
+  border: 0px solid #0e78e3;
 }
 
 /* Buttons */
@@ -50,14 +50,14 @@
 }
 
 .btn-success {
-  background-color: #28a745;
-  border: 1px solid #28a745;
+  background-color: #0e78e3;
+  border: 1px solid #0e78e3;
   color: #fff;
 }
 
 .btn-success:hover {
-  background-color: #218838;
-  border-color: #218838;
+  background-color: #095bb1;
+  border-color: #095bb1;
 }
 
 /* Form fields */
@@ -65,7 +65,7 @@ label {
   font-weight: bold;
   margin-bottom: 8px;
   display: block;
-  color: #333;
+  color: #ffff;
 }
 
 input.form-control {
@@ -108,13 +108,12 @@ input.form-control {
 
 .form-check-label {
   font-size: 14px;
-  color: #333;
+  color: #ffff;
 }
 
 /* Cards container */
 .cards {
-  background-color: #fff;
-  border: 1px solid #e3e3e3;
+
   border-radius: 8px;
   padding: 16px;
 }
@@ -135,9 +134,58 @@ input.form-control {
 }
 
 .mb-3 {
-  background-color: #fff;
-  border: 1px solid #e3e3e3;
+
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+}
+
+/* Стили для неактивных полей */
+.field-readonly {
+  background-color: #f5f5f5 !important;
+  border: 1px solid #ddd !important;
+  color: #fff !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* Стили для неактивных radio кнопок */
+.form-check-input[disabled] {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+.form-check-label.disabled {
+  color: #fff !important;
+  cursor: not-allowed !important;
+}
+
+/* Стили для отображения значения в режиме чтения */
+.readonly-value {
+  padding: 8px;
+
+  border-radius: 4px;
+  color: #ffffff93;
+  margin-top: 5px;
+}
+
+/* Обновленные стили для PhoneInput в режиме чтения */
+.react-tel-input.readonly .form-control {
+
+  color: #fff !important;
+  cursor: not-allowed !important;
+}
+
+.react-tel-input.readonly .flag-dropdown {
+  display: none !important;
+}
+
+/* Стили для группы радио-кнопок в режиме чтения */
+.priority-readonly {
+  display: inline-block;
+  padding: 8px 16px;
+
+  border-radius: 4px;
+  color: #ffffff93;
+  margin-top: 5px;
 }
