@@ -38,8 +38,8 @@ export type T_ServiceRequest = {
 // Тип для детального запроса (RequestDetail из Api.ts)
 export type T_RequestDetail = {
   id?: number;
-  client: number;
-  manager?: number | null;
+  client: string; // Изменено с number на string
+  manager?: string | null;
   status?: "Draft" | "Submitted" | "Completed" | "Rejected" | "Deleted";
   creation_date?: string;
   completion_date?: string | null;

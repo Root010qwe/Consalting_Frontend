@@ -11,12 +11,15 @@ import {
 } from "../../slices/requestDraftSlice.ts";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { setFilters } from '../../slices/requestSlice';
 
 const RequestPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const request = useAppSelector((state) => state.requestDraftSlice.request);
+  const currentUser = useAppSelector((state) => state.user.user);
+  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
 
   const contactPhone = request?.contact_phone || "";
   const priorityLevel = request?.priority_level || "Low";
@@ -30,10 +33,41 @@ const RequestPage: FC = () => {
   };
 
   useEffect(() => {
-    if (id && !request) {
-      dispatch(fetchRequestDetail(id));
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
     }
-  }, [dispatch, id, request]);
+
+    if (id) {
+      dispatch(fetchRequestDetail(id))
+        .unwrap()
+        .then((requestData) => {
+          console.log('Current User:', currentUser);
+          console.log('Request Data:', requestData);
+          
+          const hasAccess = 
+            currentUser && 
+            (currentUser.username === requestData.client || 
+             currentUser.username === requestData.manager);
+
+          console.log('Has Access:', hasAccess);
+          console.log('Access Check:', {
+            currentUsername: currentUser?.username,
+            clientUsername: requestData.client,
+            managerUsername: requestData.manager
+          });
+
+          if (!hasAccess) {
+            alert('У вас нет доступа к этой заявке');
+            navigate('/requests');
+          }
+        })
+        .catch((error) => {
+          console.error('Ошибка при загрузке заявки:', error);
+          navigate('/requests');
+        });
+    }
+  }, [dispatch, id, isAuthenticated, currentUser, navigate]);
 
   const handleSaveFields = () => {
     if (id) {
@@ -90,6 +124,18 @@ const RequestPage: FC = () => {
     }
   };
 
+  const handleViewClientRequests = () => {
+    if (request?.client) {
+      dispatch(setFilters({
+        dateFrom: '',
+        dateTo: '',
+        status: '',
+        clientFilter: request.client
+      }));
+      navigate('/requests');
+    }
+  };
+
   if (!request) {
     return (
       <div className="container">
@@ -108,16 +154,24 @@ const RequestPage: FC = () => {
             <hr />
           </div>
           <h2 className="title">Заявка в обработке</h2>
-          {isDraft && (
-            <div className="d-flex justify-content-end gap-2 my-3">
-              <button className="btn btn-primary" onClick={handleSubmitRequest}>
-                Сформировать заявку
-              </button>
-              <button className="btn btn-danger" onClick={handleDeleteRequest}>
-                Удалить заявку
-              </button>
-            </div>
-          )}
+          <div className="d-flex justify-content-end gap-2 my-3">
+            <button 
+              className="btn btn-info"
+              onClick={handleViewClientRequests}
+            >
+              Все заявки клиента
+            </button>
+            {isDraft && (
+              <>
+                <button className="btn btn-primary" onClick={handleSubmitRequest}>
+                  Сформировать заявку
+                </button>
+                <button className="btn btn-danger" onClick={handleDeleteRequest}>
+                  Удалить заявку
+                </button>
+              </>
+            )}
+          </div>
         </div>
         {isDraft && (
           <div className="mb-3">
