@@ -23,8 +23,11 @@ export type T_Request = {
   status?: "Draft" | "Submitted" | "Completed" | "Rejected" | "Deleted";
   creation_date?: string;
   completion_date?: string | null;
-  manager_username?: string;
+  manager_username?: string | null;
   total_cost?: string | null;
+  priority_level?: "Low" | "Medium" | "High";
+  formed_date?: string | null;
+  contact_phone?: string | null;
   services: T_Service[];
 };
 

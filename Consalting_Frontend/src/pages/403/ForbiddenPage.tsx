@@ -11,9 +11,9 @@ const ForbiddenPage: React.FC = () => {
             <p className="forbidden-message">Доступ запрещён</p>
             <button 
                 className="forbidden-button"
-                onClick={() => navigate('/')} // Заменили ROUTES.HOME на прямой путь
+                onClick={() => navigate('/login')} // Заменили ROUTES.HOME на прямой путь
             >
-                Вернуться на главную
+                Авторизоваться
             </button>
         </div>
     );
