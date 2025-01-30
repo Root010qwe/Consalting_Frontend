@@ -1,0 +1,50 @@
+.actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-success {
+    background-color: #198754;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-sm {
+    font-size: 0.875rem;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+}
+
+.btn-danger:hover {
+    background-color: #bb2d3b;
+}
+
+.table-header, .request-row {
+    grid-template-columns: 0.8fr 1fr 1fr 1fr 1fr 0.5fr;
+}
+
+@media (max-width: 768px) {
+    .table-header, .request-row {
+        grid-template-columns: 0.6fr 0.8fr 0.8fr 0.8fr 0.8fr 0.4fr;
+        font-size: 0.9rem;
+    }
+}
+

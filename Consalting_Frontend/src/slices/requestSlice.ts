@@ -25,6 +25,14 @@ const initialState: RequestState = {
   error: null,
 };
 
+// Добавляем новый тип для ответа от API
+interface UpdateStatusResponse {
+  message: string;
+  status: string;
+  completion_date: string;
+  total_cost: string;
+}
+
 // Фильтры заявок
 const requestSlice = createSlice({
   name: "requests",
@@ -59,6 +67,29 @@ const requestSlice = createSlice({
       state.loading = false;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(updateRequestStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateRequestStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        // Обновляем статус заявки в списке
+        const updatedRequest = state.requests.find(
+          (request) => request.id === Number(action.meta.arg.requestId)
+        );
+        if (updatedRequest) {
+          updatedRequest.status = action.meta.arg.status;
+          updatedRequest.completion_date = action.payload.completion_date;
+          updatedRequest.total_cost = action.payload.total_cost;
+        }
+      })
+      .addCase(updateRequestStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  },
 });
 
 // Экшены
@@ -88,6 +119,32 @@ export const fetchRequests = createAsyncThunk(
       dispatch(fetchRequestsSuccess(response.data));
     } catch (error) {
       dispatch(fetchRequestsFailure("Ошибка при загрузке заявок"));
+    }
+  }
+);
+
+// Добавляем новый асинхронный экшен для обновления статуса
+export const updateRequestStatus = createAsyncThunk(
+  'requests/updateStatus',
+  async ({ requestId, status }: { requestId: number; status: "Completed" | "Rejected" }, { rejectWithValue }) => {
+    try {
+      const response = await api.requests.requestsCompleteOrRejectUpdate(
+        requestId.toString(),
+        { status },
+        {
+          headers: {
+            'X-CSRFToken': getCsrfToken(),
+          },
+          withCredentials: true,
+        }
+      );
+      
+      return response.data as unknown as UpdateStatusResponse;
+    } catch (error: any) {
+      if (error.response?.data?.error) {
+        return rejectWithValue(error.response.data.error);
+      }
+      return rejectWithValue('Ошибка при обновлении статуса заявки');
     }
   }
 );

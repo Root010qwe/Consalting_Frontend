@@ -1,4 +1,5 @@
 import { T_Service } from "../modules/types.ts";
+import defaultImage5 from '../../assets/5.png';
 
 export const ServiceMocks: T_Service[] = [
     {

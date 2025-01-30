@@ -17,6 +17,8 @@ import RequestPage from "./pages/RequestPage";
 import RequestsPage from "./pages/RequestsPage";
 import ModerServicesPage from "./pages/ModerServicesPage";
 import ServicesEditPage from './pages/ServicesEditPage';
+import ServiceAddPage from './pages/ServiceAddPage';
+import ModerRequestsPage from './pages/ModerRequestsPage'
 function App() {
   const [services, setServices] = useState<T_Service[]>([]);
 
@@ -49,6 +51,8 @@ function App() {
             <Route path="/requests/" element={<RequestsPage />} />
             <Route path="/moder-services/" element={<ModerServicesPage />} />
             <Route path="/moder/services/edit/:id" element={<ServicesEditPage />} />
+            <Route path="/moder/services/add/" element={<ServiceAddPage />} />
+            <Route path="/moder-requests/" element={<ModerRequestsPage />} />
             <Route
               path="/services/"
               element={
