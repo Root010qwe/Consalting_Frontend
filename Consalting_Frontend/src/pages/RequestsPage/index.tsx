@@ -19,30 +19,44 @@ const TableHeader = () => (
 const RequestsPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { requests, dateFrom, dateTo, status, clientFilter, loading, error } = useAppSelector(
-    (state) => state.requests
-  );
+  const { requests, dateFrom, dateTo, status, clientFilter, loading, error } =
+    useAppSelector((state) => state.requests);
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/403', { state: { from: '/requests', message: 'Для доступа к странице необходимо авторизоваться' } });
+      navigate("/403", {
+        state: {
+          from: "/requests",
+          message: "Для доступа к странице необходимо авторизоваться",
+        },
+      });
       return;
     }
 
     dispatch(fetchRequests());
-  }, [dispatch, dateFrom, dateTo, status, clientFilter, isAuthenticated, navigate]);
+  }, [
+    dispatch,
+    dateFrom,
+    dateTo,
+    status,
+    clientFilter,
+    isAuthenticated,
+    navigate,
+  ]);
 
   const handleRowClick = (id: number) => {
     navigate(`/request/${id}`);
   };
 
   const handleClearClientFilter = () => {
-    dispatch(setFilters({
-      dateFrom: '',
-      dateTo: '',
-      status: ''
-    }));
+    dispatch(
+      setFilters({
+        dateFrom: "",
+        dateTo: "",
+        status: "",
+      })
+    );
   };
 
   if (!isAuthenticated) {
@@ -52,11 +66,11 @@ const RequestsPage = () => {
   return (
     <div className="requests-page">
       <h1>Заявки</h1>
-      
+
       {clientFilter && (
         <div className="alert">
           <span>Показаны заявки клиента: {clientFilter}</span>
-          <button 
+          <button
             className="btn btn-sm btn-outline-primary"
             onClick={handleClearClientFilter}
           >
@@ -66,7 +80,7 @@ const RequestsPage = () => {
       )}
 
       {error && <div className="error">{error}</div>}
-      
+
       <div className="filters">
         <label>
           Дата от:
@@ -74,7 +88,14 @@ const RequestsPage = () => {
             type="date"
             value={dateFrom}
             onChange={(e) =>
-              dispatch(setFilters({ dateFrom: e.target.value, dateTo, status, clientFilter }))
+              dispatch(
+                setFilters({
+                  dateFrom: e.target.value,
+                  dateTo,
+                  status,
+                  clientFilter,
+                })
+              )
             }
           />
         </label>
@@ -84,7 +105,14 @@ const RequestsPage = () => {
             type="date"
             value={dateTo}
             onChange={(e) =>
-              dispatch(setFilters({ dateFrom, dateTo: e.target.value, status, clientFilter }))
+              dispatch(
+                setFilters({
+                  dateFrom,
+                  dateTo: e.target.value,
+                  status,
+                  clientFilter,
+                })
+              )
             }
           />
         </label>
@@ -93,7 +121,14 @@ const RequestsPage = () => {
           <select
             value={status}
             onChange={(e) =>
-              dispatch(setFilters({ dateFrom, dateTo, status: e.target.value, clientFilter }))
+              dispatch(
+                setFilters({
+                  dateFrom,
+                  dateTo,
+                  status: e.target.value,
+                  clientFilter,
+                })
+              )
             }
           >
             <option value="">Все</option>
@@ -115,10 +150,17 @@ const RequestsPage = () => {
               <RequestCard
                 key={request.id}
                 id={request.id!}
-                status={request.status as "Draft" | "Submitted" | "Completed" | "Rejected"}
+                status={
+                  request.status as
+                    | "Draft"
+                    | "Submitted"
+                    | "Completed"
+                    | "Rejected"
+                }
                 formedAt={request.formed_date || request.creation_date || null}
                 priority_level={request.priority_level || "Low"}
                 totalCost={parseFloat(request.total_cost || "0")}
+                qr={request.qr ?? ""}
                 onClick={() => handleRowClick(request.id!)}
               />
             ))}

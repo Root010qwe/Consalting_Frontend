@@ -29,6 +29,7 @@ export type T_Request = {
   formed_date?: string | null;
   contact_phone?: string | null;
   services: T_Service[];
+  qr?: string | null;
 };
 
 // Тип для связи услуги и запроса (ServiceRequest из Api.ts)
