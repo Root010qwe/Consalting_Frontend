@@ -9,6 +9,7 @@ import {
   removeServiceFromRequest,
   fetchRequestDetail,
 } from "../../slices/requestDraftSlice.ts";
+import mockImage from "src/assets/5.png";
 
 const defaultImage = "src/assets/5.png";
 
@@ -72,11 +73,13 @@ export const RequestCard: FC<RequestCardProps> = ({
     );
   };
 
+  const imageSrc = service.image_url ? service.image_url : mockImage;
+
   return (
     <div className="service-card1">
       <img
         className="service-card1__image"
-        src={service.image_url || defaultImage}
+        src={imageSrc}
         alt="Service Image"
       />
       <div className="service-card1__details">

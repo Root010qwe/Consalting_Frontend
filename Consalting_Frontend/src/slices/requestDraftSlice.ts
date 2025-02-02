@@ -30,23 +30,24 @@ interface Service {
   price: string;
   duration: string;
 }
-
+// 2. Начальное состояние
 const initialState: RequestDraftState = {
   app_id: undefined,
   count: undefined,
   requests: [],
   request: null,
   filters: {
-    start_date: "", // Установите значения по умолчанию, если нужно
+    start_date: "", 
     end_date: "",
     status: "",
   },
 };
 
 // Получение детальной информации о заявке
-export const fetchRequestDetail = createAsyncThunk<T_RequestDetail, string>(
+export const fetchRequestDetail = createAsyncThunk<T_RequestDetail, string>( // 3. Асинхронные actions (thunks) взаимодействие с API
   "requests/fetchRequestDetail",
   async (request_id) => {
+    // Здесь используется Axios через api клиент
     const response = (await api.requests.requestsRead(
       request_id
     )) as unknown as AxiosResponse<T_RequestDetail>;
@@ -69,7 +70,7 @@ export const fetchRequests = createAsyncThunk<
     status: filters.status,
   })) as unknown as AxiosResponse<T_Request[]>;
 
-  return response.data; // Возвращаем список заявок
+  return response.data; 
 });
 
 // Удаление заявки со статусом Draft
@@ -208,6 +209,7 @@ export const submitDraftRequest = createAsyncThunk<void, string>(
 const requestDraftSlice = createSlice({
   name: "requestDraft",
   initialState,
+   // Синхронные reducers
   reducers: {
     setAppId: (state, action: PayloadAction<number>) => {
       state.app_id = action.payload;
@@ -260,7 +262,7 @@ const requestDraftSlice = createSlice({
       console.error("Ошибка при загрузке списка заявок:", action.error.message);
     });
 
-    // Обработка fetchRequestDetail (пример)
+    // Обработка fetchRequestDetail 
     builder.addCase(
       fetchRequestDetail.fulfilled,
       (state, action: PayloadAction<T_RequestDetail>) => {

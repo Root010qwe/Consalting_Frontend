@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -6,6 +6,7 @@ import { ModerServiceCard } from '../../components/ModerServiceCard';
 import { fetchServices } from '../../slices/serviceSlice';
 import { setServiceName } from '../../slices/serviceSlice';
 import { deleteService } from '../../slices/moderSlice';
+import ConfirmDialog from '../../components/ConfirmDialog';
 
 export const ModerServicesPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +17,10 @@ export const ModerServicesPage: React.FC = () => {
   const isLoading = useAppSelector((state) => state.services.loading);
   const { isAuthenticated, user } = useAppSelector((state) => state.user);
   const isModerator = Boolean(user?.is_staff || user?.is_superuser);
+
+  // Состояния для диалога подтверждения удаления
+  const [deleteServiceId, setDeleteServiceId] = useState<number | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // Проверка прав доступа
   useEffect(() => {
@@ -47,17 +52,32 @@ export const ModerServicesPage: React.FC = () => {
     navigate(`/moder/services/edit/${id}`);
   };
 
-  const handleDelete = async (id: number) => {
-    if (window.confirm('Вы уверены, что хотите удалить эту услугу?')) {
+  // Вместо window.confirm открываем наш диалог подтверждения
+  const handleDelete = (id: number) => {
+    setDeleteServiceId(id);
+    setShowConfirm(true);
+  };
+
+  // Функция подтверждения удаления
+  const confirmDelete = async () => {
+    if (deleteServiceId !== null) {
       try {
-        await dispatch(deleteService(id)).unwrap();
+        await dispatch(deleteService(deleteServiceId)).unwrap();
         // После успешного удаления обновляем список
         loadServices();
       } catch (error) {
         console.error('Ошибка при удалении:', error);
-        alert('Ошибка при удалении услуги');
+        console.log('Ошибка при удалении услуги');
       }
     }
+    setShowConfirm(false);
+    setDeleteServiceId(null);
+  };
+
+  // Функция отмены удаления
+  const cancelDelete = () => {
+    setShowConfirm(false);
+    setDeleteServiceId(null);
   };
 
   return (
@@ -98,6 +118,13 @@ export const ModerServicesPage: React.FC = () => {
       ) : (
         <div className="text-center">Услуги не найдены</div>
       )}
+
+      <ConfirmDialog
+        show={showConfirm}
+        message="Вы уверены, что хотите удалить эту услугу?"
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
     </Container>
   );
 };

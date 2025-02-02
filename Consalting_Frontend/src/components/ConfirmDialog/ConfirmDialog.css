@@ -1,0 +1,67 @@
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* затемнение */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000; /* поверх всего */
+}
+
+.confirm-dialog {
+  background-color: #333;
+  border-radius: 8px;
+  padding: 20px;
+  min-width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-title {
+  margin-top: 0;
+  color: #0e78e3; /* можно подстроить под дизайн */
+}
+
+.confirm-message {
+  margin: 15px 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+
+.confirm-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+/* Кнопка подтверждения */
+.btn-confirm {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-confirm:hover {
+  background-color: #b12b37;
+}
+
+/* Кнопка отмены */
+.btn-cancel {
+  background-color: #095bb1;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background-color: #0e78e3;
+} 

@@ -4,6 +4,7 @@ import { T_Service } from '../../modules/types';
 import './ModerServiceCard.css';
 import defaultImage from '../../assets/default.png';
 
+
 interface ModerServiceCardProps {
   service: T_Service;
   onEdit: (id: number) => void;

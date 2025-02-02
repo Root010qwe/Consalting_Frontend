@@ -153,23 +153,7 @@ const ModerRequestsPage = () => {
             <option value="Rejected">Отклонено</option>
           </select>
         </label>
-        <label>
-          Клиент:
-          <input
-            type="text"
-            value={clientFilter}
-            onChange={(e) =>
-              dispatch(
-                setFilters({
-                  dateFrom,
-                  dateTo,
-                  status,
-                  clientFilter: e.target.value,
-                })
-              )
-            }
-          />
-        </label>
+
         <button
           className="btn btn-outline-primary"
           onClick={handleClearFilters}

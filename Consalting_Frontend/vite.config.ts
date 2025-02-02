@@ -1,12 +1,12 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   base: "/Consalting_Frontend/",
-  server: { 
+  server: {
     host: true,
     port: 3000,
     proxy: {
@@ -20,14 +20,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/images/, "/images/"),
       },
-    }, 
+    },
   },
-  
 
   resolve: {
     alias: {
-      src: resolve(__dirname, 'src'), // используйте '@' как алиас для 'src'
+      src: resolve(__dirname, "src"), // используйте '@' как алиас для 'src'
     },
   },
-  
-})
+});

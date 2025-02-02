@@ -47,7 +47,7 @@ export const ServicesEditPage: React.FC = () => {
         })
         .catch((error) => {
           console.error('Ошибка при загрузке услуги:', error);
-          alert('Ошибка при загрузке услуги');
+          console.log('Ошибка при загрузке услуги');
         });
     }
   }, [id, dispatch]);

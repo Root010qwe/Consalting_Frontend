@@ -36,7 +36,7 @@ const ProfilePage = () => {
     e.preventDefault();
     
     if (!profileForm.username.trim()) {
-      alert('Имя пользователя обязательно');
+      console.log('Имя пользователя обязательно');
       return;
     }
     
@@ -48,7 +48,7 @@ const ProfilePage = () => {
       
       if (updateProfile.fulfilled.match(result)) {
         dispatch(resetProfileForm());
-        alert('Данные успешно обновлены!');
+        
       }
     } catch (err) {
       console.error('Ошибка обновления:', err);

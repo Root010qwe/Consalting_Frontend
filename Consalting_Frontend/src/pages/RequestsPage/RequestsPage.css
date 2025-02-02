@@ -306,26 +306,24 @@ button {
   display: none; /* Изначально скрыто */
   position: absolute; /* Абсолютное позиционирование относительно родителя */
   top: 50%; /* Верхний край на половине высоты родителя */
-  left: calc(
-    -100% - 100px
-  ); /* Левый край смещен на ширину родителя минус 100 пикселей */
+  left: calc(-100% - 100px); /* Левый край смещен на ширину родителя минус 100 пикселей */
   transform: translateY(-50%) translateX(-80%) scale(1.5);
   /*
-     * Трансформация:
-     *   translateY(-50%) - смещение вверх на половину своей высоты для центрирования по вертикали,
-     *   translateX(-80%) - смещение влево на 80% ширины родителя,
-     *   scale(1.5) - увеличение размера в 1.5 раза
-     */
+   * Трансформация:
+   *   translateY(-50%) - смещение вверх на половину своей высоты для центрирования по вертикали,
+   *   translateX(-80%) - смещение влево на 80% ширины родителя,
+   *   scale(1.5) - увеличение размера в 1.5 раза
+   */
   z-index: 1000; /* Высокий уровень z-индекса для вывода поверх других элементов */
   background-color: white;
   border: 1px solid #ccc;
-  padding: 15px;
-  border-radius: 4px;
+  padding: 4px;
+  border-radius: 15px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   p {
-    font-size: 12px;
+      font-size: 120px;
   }
 }
 
@@ -341,10 +339,10 @@ button {
 
 /* Псевдоэлемент для иконки статуса при наведении */
 .status-icon:hover::after {
-  position: absolute; /* Абсолютное позиционирование */
+  position: absolute;
   bottom: -25px;
   left: 50%;
-  transform: translateX(-50%); /* Центрируем по горизонтали */
+  transform: translateX(-50%);
   background-color: #fff;
   color: #333;
   padding: 5px;
@@ -352,4 +350,9 @@ button {
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 12px;
+}
+
+.cell.actions {
+  overflow: visible;
+  position: relative;
 }
