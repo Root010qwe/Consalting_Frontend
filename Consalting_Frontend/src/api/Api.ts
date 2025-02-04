@@ -82,6 +82,40 @@ export interface Request {
    * @maxLength 15
    */
   contact_phone?: string | null;
+  /** Qr */
+  qr?: string | null;
+}
+
+export interface ServiceAdd {
+  /**
+   * Name
+   * @minLength 1
+   * @maxLength 100
+   */
+  name: string;
+  /** Description */
+  description?: string | null;
+  /** Status */
+  status?: "A" | "D";
+  /**
+   * Price
+   * @format decimal
+   */
+  price: string;
+  /**
+   * Duration
+   * Длительность в часах
+   * @min 0
+   * @max 2147483647
+   */
+  duration?: number | null;
+  /**
+   * Image url
+   * Ссылка на изображение услуги
+   * @format uri
+   * @maxLength 200
+   */
+  image_url?: string | null;
 }
 
 export interface Service {
@@ -575,7 +609,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   services = {
     /**
-     * @description Возвращает список активных услуг. Можно передать параметр 'name' для фильтрации.
+     * @description Возвращает список активных услуг с пагинацией. Можно передать параметр 'name' для фильтрации.
      *
      * @tags services
      * @name ServicesList
@@ -586,6 +620,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         /** Фильтровать по подстроке в имени услуги */
         name?: string;
+        /** Номер страницы */
+        page?: number;
+        /** Число элементов на странице */
+        page_size?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -605,8 +643,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/services/create/
      * @secure
      */
-    servicesCreateCreate: (data: Service, params: RequestParams = {}) =>
-      this.request<Service, void>({
+    servicesCreateCreate: (data: ServiceAdd, params: RequestParams = {}) =>
+      this.request<ServiceAdd, void>({
         path: `/services/create/`,
         method: "POST",
         body: data,

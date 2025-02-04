@@ -108,3 +108,66 @@
         height: 45px !important;
     }
 }
+/* Стили для панели пагинации, похожей на Google */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    
+}
+
+.pagination .page-item {
+    
+    margin: 0 3px;
+}
+
+.pagination .page-link {
+    padding: 6px 12px;
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: background-color 0.2s, border-color 0.2s;
+    
+    border-color: var(--search-border);
+    cursor: pointer;
+    border-radius: 4px; 
+}
+
+.pagination .page-link:hover {
+    background-color: var(--search-bg);
+    border-color: var(--search-border);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.pagination .page-link:focus,
+.pagination .page-link:active {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-btn-bg);
+    border-color: var(--primary-btn-bg);
+    color: #fff;
+    border-radius: 4px;
+}
+
+/* Стили для отключённых элементов пагинации */
+.pagination .page-item.disabled .page-link {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--text-color);
+}
+
+/* Адаптивность для пагинации */
+@media (max-width: 768px) {
+    .pagination .page-link {
+        padding: 4px 8px;
+    }
+}

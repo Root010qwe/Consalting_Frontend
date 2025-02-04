@@ -1,10 +1,20 @@
 import "./ServicesPage.css";
-import { Button, Col, Container, Form, Input, Row } from "reactstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Input,
+  Row,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+} from "reactstrap";
 import ServiceCard from "../../components/ServiceCard/index";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../store";
-import { setServiceName, fetchServices } from "../../slices/serviceSlice";
+import { setServiceName, fetchServices, setCurrentPage } from "../../slices/serviceSlice";
 import { clearDraft } from "../../slices/requestDraftSlice";
 import basketIcon from "../../assets/shopping-basket.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,9 +22,17 @@ import { Link, useNavigate } from "react-router-dom";
 const ServicesListPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { serviceName, filteredServices, isMock, loading } = useSelector(
-    (state: RootState) => state.services
-  );
+  const {
+    serviceName,
+    filteredServices,
+    isMock,
+    loading,
+    next,
+    previous,
+    currentPage,
+    pageSize,
+    totalCount,
+  } = useSelector((state: RootState) => state.services);
   const [localServiceName, setLocalServiceName] = useState(serviceName);
 
   const { app_id, count } = useSelector(
@@ -31,7 +49,6 @@ const ServicesListPage: React.FC = () => {
 
   // Обработчик перехода на страницу заявки
   const handleBasketClick = () => {
-    console.log(app_id);
     if (app_id) {
       navigate(`/request/${app_id}`);
     }
@@ -40,11 +57,51 @@ const ServicesListPage: React.FC = () => {
   const search = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(setServiceName(localServiceName));
+    // Сбрасываем пагинацию при новом поиске (начинаем с первой страницы)
+    dispatch(setCurrentPage(1));
   };
 
+  // Загружаем услуги при изменении названия услуги или текущей страницы
   useEffect(() => {
-    dispatch(fetchServices(serviceName));
-  }, [serviceName, dispatch]);
+    dispatch(fetchServices({ serviceName, page: currentPage, page_size: pageSize }));
+  }, [serviceName, currentPage, pageSize, dispatch]);
+
+  // Обработчики для перехода между страницами
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      dispatch(setCurrentPage(currentPage - 1));
+    }
+  };
+
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(totalCount / pageSize);
+    if (currentPage < totalPages) {
+      dispatch(setCurrentPage(currentPage + 1));
+    }
+  };
+
+  // Вычисляем общее количество страниц
+  const totalPages = Math.ceil(totalCount / pageSize);
+
+  // Функция для генерации сокращённого диапазона номеров страниц с многоточиями
+  const getPaginationRange = (): (number | string)[] => {
+    const delta = 1; // количество соседних страниц вокруг текущей
+    const range: (number | string)[] = [];
+    const left = currentPage - delta;
+    const right = currentPage + delta;
+    let lastPage: number | null = null;
+
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= left && i <= right)) {
+        if (lastPage && i - lastPage > 1) {
+          range.push("...");
+        }
+        range.push(i);
+        lastPage = i;
+      }
+    }
+    return range;
+  };
 
   return (
     <Container className="services-page">
@@ -60,11 +117,7 @@ const ServicesListPage: React.FC = () => {
                 />
               </Col>
               <Col>
-                <Button
-                  color="primary"
-                  className="w-100 search-btn"
-                  type="submit"
-                >
+                <Button color="primary" className="w-100 search-btn" type="submit">
                   Поиск
                 </Button>
               </Col>
@@ -100,6 +153,33 @@ const ServicesListPage: React.FC = () => {
           ))
         )}
       </div>
+
+      {/* Панель пагинации */}
+      <Row className="mt-4 pagination-controls">
+        <Col>
+          <Pagination>
+            <PaginationItem disabled={currentPage === 1}>
+              <PaginationLink previous onClick={handlePreviousPage} />
+            </PaginationItem>
+            {getPaginationRange().map((pageItem, index) =>
+              typeof pageItem === "number" ? (
+                <PaginationItem key={index} active={pageItem === currentPage}>
+                  <PaginationLink onClick={() => dispatch(setCurrentPage(pageItem))}>
+                    {pageItem}
+                  </PaginationLink>
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={index} disabled>
+                  <PaginationLink>{pageItem}</PaginationLink>
+                </PaginationItem>
+              )
+            )}
+            <PaginationItem disabled={currentPage === totalPages || totalPages === 0}>
+              <PaginationLink next onClick={handleNextPage} />
+            </PaginationItem>
+          </Pagination>
+        </Col>
+      </Row>
     </Container>
   );
 };

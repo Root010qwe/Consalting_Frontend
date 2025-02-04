@@ -7,6 +7,7 @@ import { api } from "../api";
 import { AxiosResponse } from "axios";
 import { RootState } from "../store";
 import { getCsrfToken } from "../modules/Utils";
+
 interface ServicesState {
   serviceName: string;
   filteredServices: T_Service[];
@@ -14,6 +15,11 @@ interface ServicesState {
   isMock: boolean;
   loading: boolean;
   error: string | null;
+  totalCount: number;
+  next: string | null;
+  previous: string | null;
+  currentPage: number;
+  pageSize: number;
 }
 
 const initialState: ServicesState = {
@@ -23,6 +29,11 @@ const initialState: ServicesState = {
   isMock: false,
   loading: false,
   error: null,
+  totalCount: 0,
+  next: null,
+  previous: null,
+  currentPage: 1,
+  pageSize: 20,
 };
 
 export const addServiceToDraft = createAsyncThunk<
@@ -62,33 +73,36 @@ export const addServiceToDraft = createAsyncThunk<
 );
 
 export const fetchServices = createAsyncThunk<
-  T_Service[], // что возвращаем при успехе
-  string, // входной параметр (serviceName)
-  { state: RootState; rejectValue: string } // доп. настройки
+  { services: T_Service[]; totalCount: number; next: string | null; previous: string | null },
+  { serviceName: string; page?: number; page_size?: number },
+  { state: RootState; rejectValue: string }
 >(
   "services/fetchServices",
-  async (serviceName, { dispatch, rejectWithValue }) => {
+  async ({ serviceName, page = 1, page_size = 20 }, { dispatch, rejectWithValue }) => {
     try {
-      // Вызываем кодогенерированный метод с фильтром name=...
+      // Передаём параметры пагинации вместе с фильтром по имени
       const response = (await api.services.servicesList({
         name: serviceName.toLowerCase(),
-      })) as AxiosResponse<any>; // или уточните тип вместо 'any'
+        page,
+        page_size,
+      })) as AxiosResponse<any>;
 
-      // Предполагаем, что сервер возвращает объект { services, count, draft_vacancy_application }
-      const data = response.data;
-      console.log(data);
-      // Извлекаем нужные поля
-      const app_id = data.draft_request_id;
-      const count = data.services_in_draft_request;
-      const services = data.services as T_Service[];
+      // Ответ ожидается в виде:
+      // { count, next, previous, results: { duration, draft_request_id, services_in_draft_request, services } }
+      const { count, next, previous, results } = response.data;
 
-      // Диспатчим в стор доп. данные
-      dispatch(setAppId(app_id));
-      dispatch(setCount(count));
+      // Обновляем данные корзины
+      dispatch(setAppId(results.draft_request_id));
+      dispatch(setCount(results.services_in_draft_request));
 
-      // Возвращаем массив услуг
-      return services;
+      return {
+        services: results.services as T_Service[],
+        totalCount: count,
+        next,
+        previous,
+      };
     } catch (error) {
+      console.error("Ошибка при загрузке данных:", error);
       return rejectWithValue("Ошибка при загрузке данных");
     }
   }
@@ -144,6 +158,9 @@ const serviceSlice = createSlice({
     clearSelectedService(state) {
       state.selectedService = null;
     },
+    setCurrentPage(state, action: PayloadAction<number>) {
+      state.currentPage = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -152,7 +169,10 @@ const serviceSlice = createSlice({
       })
       .addCase(fetchServices.fulfilled, (state, action) => {
         state.loading = false;
-        state.filteredServices = action.payload;
+        state.filteredServices = action.payload.services;
+        state.totalCount = action.payload.totalCount;
+        state.next = action.payload.next;
+        state.previous = action.payload.previous;
         state.isMock = false;
       })
       .addCase(fetchServices.rejected, (state) => {
@@ -178,6 +198,6 @@ const serviceSlice = createSlice({
   },
 });
 
-export const { setServiceName, clearSelectedService } = serviceSlice.actions;
+export const { setServiceName, clearSelectedService, setCurrentPage } = serviceSlice.actions;
 
 export default serviceSlice.reducer;
