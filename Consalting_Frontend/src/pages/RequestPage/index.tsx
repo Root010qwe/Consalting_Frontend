@@ -13,7 +13,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { setFilters } from "../../slices/requestSlice";
 import ConfirmDialog from "../../components/ConfirmDialog";
-
+import "./RequestPage.css"
 const RequestPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
@@ -166,7 +166,7 @@ const RequestPage: FC = () => {
           <div className="line">
             <hr />
           </div>
-          <h2 className="title">Заявка в обработке</h2>
+          <h2 className="title">Заявка {id}</h2>
           <div className="d-flex justify-content-center gap-2 my-3">
             <button className="btn btn-info" onClick={handleViewClientRequests}>
               Все заявки клиента

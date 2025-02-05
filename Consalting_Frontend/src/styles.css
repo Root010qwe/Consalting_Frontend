@@ -1,5 +1,9 @@
 :root {
-    --root-bg: #3e3c3c;
+    --root-bg: linear-gradient(
+    135deg,
+    rgba(16, 17, 27, 0.95) 0%,
+    rgba(23, 24, 38, 0.95) 100%
+  );;
     --text-color: #fff;
     --primary-color: #0d6efd;
     --primary-color__hover: #40474B;
@@ -7,7 +11,7 @@
     --header-bg: #4d4949;
     --header-color: #0d6efd;
 
-    --card-bg: #4d4949;
+    --card-bg: rgba(30, 32, 50, 0.7);
     --card-border-color: #0d6dfd6a;
     --card-text: #fff;
 
@@ -18,7 +22,7 @@
     --primary-btn-color: #fff;
     --primary-btn-color--hover: #fff;
 
-    --search-bg: #4d4949;
+    --search-bg: rgba(30, 32, 50, 0.7);
     --search-bg--hover: var(--primary-color__hover);
     --search-border: var(--primary-color);
     --search-border--hover: var(--primary-color__hover);

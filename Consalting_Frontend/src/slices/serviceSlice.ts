@@ -33,7 +33,7 @@ const initialState: ServicesState = {
   next: null,
   previous: null,
   currentPage: 1,
-  pageSize: 20,
+  pageSize: 21,
 };
 
 export const addServiceToDraft = createAsyncThunk<

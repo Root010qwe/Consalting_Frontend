@@ -1,56 +1,157 @@
+/* Основной контейнер с наложением цифрового паттерна и анимацией */
 .registration-page {
-  max-width: 400px ! important  ;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: var(--card-bg);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Центрирование по вертикали */
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+  color: #fff; /* Светлый текст */
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect x="0" y="0" width="60" height="60" fill="none" stroke="%230e78e3" stroke-opacity="0.1"/></svg>') repeat;
 }
 
-.registration-page h2 {
+/* Наложение лёгкого цифрового паттерна */
+.registration-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect x="0" y="0" width="60" height="60" fill="none" stroke="%230e78e3" stroke-opacity="0.1"/></svg>') repeat;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Заголовок регистрации с неоновым свечением */
+.registration-page h1 {
   text-align: center;
   color: var(--primary-color);
   margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px rgba(88,103,221,0.5);
+  position: relative;
+  z-index: 1;
+  letter-spacing: 2px;
+  font-size: 2.5rem;
 }
 
-.form-group {
-  margin-bottom: 1rem;
+/* Форма регистрации с прозрачным тёмным фоном и стеклянным эффектом */
+.registration-page form {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(30, 32, 50, 0.7); /* Прозрачный тёмный фон */
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(88,103,221,0.3);
+  box-shadow: 0 0 20px rgba(88,103,221,0.1), inset 0 0 20px rgba(88,103,221,0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.6s ease-out;
 }
 
-.form-group label {
+/* Группы элементов формы */
+.registration-page .form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Надписи к полям ввода */
+.registration-page label {
   display: block;
   margin-bottom: 0.5rem;
-  color: var(--text-color);
+  color: #fff;
 }
 
-.form-group input {
+/* Стиль для полей ввода */
+.registration-page input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--search-border);
+  border: 1px solid rgba(88,103,221,0.3);
   border-radius: 4px;
-  background: var(--search-bg);
-  color: var(--text-color);
-  transition: border-color 0.3s ease;
+  background: rgba(40,42,58,0.8);
+  color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-group input:focus {
-  border-color: var(--primary-color);
+.registration-page input:focus {
+  border-color: rgba(88,103,221,0.8);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0 10px rgba(88,103,221,0.3);
 }
 
-button[type="submit"] {
+/* Кнопка отправки формы */
+.registration-page button[type="submit"] {
   width: 100%;
-  padding: .75rem;
-  
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(88,103,221,0.1);
 }
 
-button[type="submit"]:hover {
+.registration-page button[type="submit"]:hover {
   background: var(--primary-color__hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(88,103,221,0.3);
 }
 
-.error-message {
-  color: #dc3545;
+/* Сообщение об ошибке (если требуется) */
+.registration-page .error-message {
+  font-size: 1rem;
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 5px;
   margin-bottom: 1rem;
   text-align: center;
+}
+
+/* Анимация появления */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .registration-page {
+    width: 95%;
+    margin: 2rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .registration-page h1 {
+    font-size: 2rem;
+    letter-spacing: 1.5px;
+  }
+  
+  .registration-page form {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .registration-page h1 {
+    font-size: 1.5rem;
+  }
+  
+  .registration-page form {
+    padding: 1rem;
+    margin: 0 10px;
+  }
 }

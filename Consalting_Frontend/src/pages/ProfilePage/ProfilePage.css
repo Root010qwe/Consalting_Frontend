@@ -1,48 +1,157 @@
+/* Основной контейнер с анимацией появления и наложением паттерна */
 .profile-page {
-    max-width: 400px !important;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .profile-form {
-    margin-top: 2rem;
-  }
-  
-  .auth-warning {
-    text-align: center;
-    margin-top: 30vh;
-    color: var(--primary-color);
-  }
-   h1 {
-    text-align: center;
-    color: var(--primary-color) !important;
-    margin-bottom: 1.5rem;
-  }
-  .error-message {
-    color: #dc3545;
-    margin: 1rem 0;
-    text-align: center;
-  }
-  
-  .form-control {
-    width: 100% !important;
-    padding: 0.75rem !important;
-    border: 1px solid var(--search-border) !important;
-    border-radius: 4px  !important;
-    background: var(--search-bg) !important;
-    color: var(--text-color) !important;
-    transition: border-color 0.3s ease !important;
-  }
-  
-  .form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
-    
-  }
-  input::placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Центрирование по вертикали */
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+  color: #fff; /* Используем светлый цвет для текста */
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect x="0" y="0" width="60" height="60" fill="none" stroke="%230e78e3" stroke-opacity="0.1"/></svg>') repeat;
+}
 
-    color: rgb(238, 233, 233)!important;
+/* Наложение лёгкого цифрового паттерна */
+.profile-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect x="0" y="0" width="60" height="60" fill="none" stroke="%230e78e3" stroke-opacity="0.1"/></svg>') repeat;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Заголовок с неоновым свечением */
+.profile-page h1 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px rgba(88,103,221,0.5);
+  position: relative;
+  z-index: 1;
+  letter-spacing: 2px;
+  font-size: 2.5rem;
+}
+
+/* Сообщение об ошибке */
+.profile-page .error {
+  font-size: 1rem;
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Форма профиля - стилизация по мотивам страницы входа */
+.profile-page form {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(30, 32, 50, 0.7); /* Прозрачный тёмный фон */
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(88,103,221,0.3);
+  box-shadow: 0 0 20px rgba(88,103,221,0.1), inset 0 0 20px rgba(88,103,221,0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Группы элементов формы */
+.profile-page .form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Надписи к полям ввода */
+.profile-page label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+/* Стиль для полей ввода */
+.profile-page input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(88,103,221,0.3);
+  border-radius: 4px;
+  background: rgba(40,42,58,0.8);
+  color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-page input:focus {
+  border-color: rgba(88,103,221,0.8);
+  outline: none;
+  box-shadow: 0 0 10px rgba(88,103,221,0.3);
+}
+
+/* Кнопка отправки */
+.profile-page button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(88,103,221,0.1);
+}
+
+.profile-page button[type="submit"]:hover {
+  background: var(--primary-color__hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(88,103,221,0.3);
+}
+
+/* Анимация появления */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 1024px) {
+  .profile-page form {
+    width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page h1 {
+    font-size: 2rem;
+    letter-spacing: 1.5px;
+  }
+  
+  .profile-page form {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-page h1 {
+    font-size: 1.5rem;
+  }
+  
+  .profile-page form {
+    padding: 1rem;
+    margin: 0 10px;
+  }
+}

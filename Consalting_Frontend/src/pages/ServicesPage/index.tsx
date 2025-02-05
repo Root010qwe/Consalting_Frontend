@@ -18,6 +18,7 @@ import { setServiceName, fetchServices, setCurrentPage } from "../../slices/serv
 import { clearDraft } from "../../slices/requestDraftSlice";
 import basketIcon from "../../assets/shopping-basket.png";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const ServicesListPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -61,7 +62,7 @@ const ServicesListPage: React.FC = () => {
     dispatch(setCurrentPage(1));
   };
 
-  // Загружаем услуги при изменении названия услуги или текущей страницы
+  // Загружаем услуги при изменении параметров
   useEffect(() => {
     dispatch(fetchServices({ serviceName, page: currentPage, page_size: pageSize }));
   }, [serviceName, currentPage, pageSize, dispatch]);
@@ -105,6 +106,14 @@ const ServicesListPage: React.FC = () => {
 
   return (
     <Container className="services-page">
+      <motion.h1
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Услуги
+      </motion.h1>
+
       <Row className="services-page__form mb-5">
         <Col md="6">
           <Form onSubmit={search}>
@@ -125,7 +134,7 @@ const ServicesListPage: React.FC = () => {
           </Form>
         </Col>
       </Row>
-      
+
       <Button
         className="basket-btn-fixed"
         disabled={!isAuthenticated}
@@ -138,7 +147,7 @@ const ServicesListPage: React.FC = () => {
           </span>
         )}
       </Button>
-      
+
       <div className="services-page__cards">
         {loading ? (
           <div>Загрузка...</div>

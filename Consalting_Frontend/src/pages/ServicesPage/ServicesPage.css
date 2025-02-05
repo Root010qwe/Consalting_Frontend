@@ -4,12 +4,30 @@
 
 .services-page__form {
     padding-left: 65px;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.6s ease-out;
 }
 
+.services-page  h1 {
+    text-align: center;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(88,103,221,0.5);
+    position: relative;
+    z-index: 1;
+    letter-spacing: 2px;
+    font-size: 2.5rem;
+    line-height: 2;
+    animation: fadeInUp 0.6s ease-out;
+}
 .services-page__cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+}
+
+/* Каждый элемент карточек анимируется */
+.services-page__cards > * {
+    animation: fadeInUp 0.8s ease-out;
 }
 
 /* Адаптивность */
@@ -170,4 +188,47 @@
     .pagination .page-link {
         padding: 4px 8px;
     }
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: .75rem;
+    
+  }
+  
+  button[type="submit"]:hover {
+    background: var(--primary-color__hover);
+  }
+
+
+  .form-control {
+    width: 100% !important;
+    padding: 0.75rem !important;
+    border: 1px solid var(--search-border) !important;
+    border-radius: 4px  !important;
+    background: var(--search-bg) !important;
+    color: var(--text-color) !important;
+    transition: border-color 0.3s ease !important;
+  }
+  
+  .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    
+  }
+  input::placeholder {
+
+    color: rgb(238, 233, 233)!important;
+  }
+
+/* Анимация появления элементов */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,62 +1,162 @@
+/* Основной контейнер с анимацией появления и наложением паттерна */
 .LoginPage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+/* Центрирование по вертикали */
   min-height: 100vh;
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+  color: #fff; /* Используем светлый цвет для текста */
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect x="0" y="0" width="60" height="60" fill="none" stroke="%230e78e3" stroke-opacity="0.1"/></svg>') repeat;
 }
 
+/* Наложение лёгкого цифрового паттерна */
+.LoginPage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect x="0" y="0" width="60" height="60" fill="none" stroke="%230e78e3" stroke-opacity="0.1"/></svg>') repeat;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Заголовок с неоновым свечением */
 .LoginPage h1 {
   text-align: center;
   color: var(--primary-color);
   margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px rgba(88,103,221,0.5);
+  position: relative;
+  z-index: 1;
+  letter-spacing: 2px;
+  font-size: 2.5rem;
 }
 
+/* Сообщение об ошибке - стилизованное аналогично странице заявок */
 .LoginPage .error {
   font-size: 1rem;
-  color: #dc3545;
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 5px;
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
+/* Обёртка для фоновой анимации (если требуется) */
+.wrapper {
+  background: transparent;
+}
+
+/* Форма входа - стилизована по мотивам страницы заявок */
 .LoginPage form {
   width: 100%;
   max-width: 400px;
-  background: var(--card-bg);
+  background: rgba(30, 32, 50, 0.7); /* Прозрачный тёмный фон */
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  border: 1px solid rgba(88,103,221,0.3);
+  box-shadow: 0 0 20px rgba(88,103,221,0.1), inset 0 0 20px rgba(88,103,221,0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.6s ease-out;
 }
 
+/* Группы элементов формы */
 .LoginPage .form-group {
   margin-bottom: 1.5rem;
 }
 
+/* Надписи к полям ввода */
 .LoginPage label {
   display: block;
   margin-bottom: 0.5rem;
-  color: var(--text-color);
+  color: #fff;
 }
 
+/* Стиль для полей ввода - адаптировано под дизайн страницы заявок */
 .LoginPage input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--search-border);
+  border: 1px solid rgba(88,103,221,0.3);
   border-radius: 4px;
-  background: var(--search-bg);
-  color: var(--text-color);
-  transition: border-color 0.3s ease;
+  background: rgba(40,42,58,0.8);
+  color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .LoginPage input:focus {
-  border-color: var(--primary-color);
+  border-color: rgba(88,103,221,0.8);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0 10px rgba(88,103,221,0.3);
 }
 
+/* Кнопка отправки - с эффектами при наведении, как на странице заявок */
 .LoginPage button[type="submit"] {
   width: 100%;
   padding: 0.75rem;
   font-size: 1.1rem;
   margin-top: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(88,103,221,0.1);
+}
+
+.LoginPage button[type="submit"]:hover {
+  background: var(--primary-color__hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(88,103,221,0.3);
+}
+
+/* Анимация появления */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 1024px) {
+  .LoginPage form {
+    width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .LoginPage h1 {
+    font-size: 2rem;
+    letter-spacing: 1.5px;
+  }
+  
+  .LoginPage form {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .LoginPage h1 {
+    font-size: 1.5rem;
+  }
+  
+  .LoginPage form {
+    padding: 1rem;
+    margin: 0 10px;
+  }
 }

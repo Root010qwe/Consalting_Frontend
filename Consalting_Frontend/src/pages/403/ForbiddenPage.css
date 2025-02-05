@@ -1,40 +1,76 @@
 .forbidden-container {
-    display: flex;
+
     flex-direction: column;
     align-items: center;
-
+    justify-content: center;
     height: 100vh;
-    background-color: #3e3c3c;
-    text-align: center;
-}
 
-.forbidden-title {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    /* Добавляем анимацию появления */
+    animation: fadeInUp 0.6s ease-out;
+    color: #fff;
+  }
+  
+  /* Лёгкий цифровой паттерн (аналогично RequestsPage) */
+  .forbidden-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect x="0" y="0" width="60" height="60" fill="none" stroke="%230e78e3" stroke-opacity="0.1"/></svg>') repeat;
+    opacity: 0.03;
+    pointer-events: none;
+  }
+  
+  .forbidden-title {
     font-size: 96px;
     font-weight: bold;
     color: #dc3545;
     margin: 0;
-}
-
-.forbidden-message {
+    text-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .forbidden-message {
     font-size: 24px;
     color: #78828b;
     margin: 16px 0;
-}
-
-.forbidden-button {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .forbidden-button {
     padding: 10px 20px;
     font-size: 18px;
     color: #fff;
-    background-color: #3e3c3c;
+
     border-radius: 15px;
-    border-color: #0d6efd;
+    border: 1px solid #0d6efd;
     cursor: pointer;
     text-transform: uppercase;
-    transition: background-color 0.3s;
-}
-
-.forbidden-button:hover {
+    transition: background-color 0.3s, transform 0.3s;
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .forbidden-button:hover {
     background-color: #0d6efd;
-    border: 1px solid #6c757d;
+    border-color: #6c757d;
     color: #212539;
-}
+    transform: translateY(-2px);
+  }
+  
+  /* Ключевые кадры для анимации появления */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

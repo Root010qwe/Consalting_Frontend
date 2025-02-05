@@ -77,3 +77,163 @@ p {
     transform: translateY(0);
   }
 }
+
+/* Основной контейнер. Убираем overflow: hidden, чтобы страница была прокручиваемой */
+.home {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: auto;
+  font-family: Arial, sans-serif;
+  color: white;
+  box-sizing: border-box;
+}
+
+/* Видео вынесено в фиксированный слой, чтобы занимать весь экран даже при прокрутке */
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* Фиксированный слой с затемнением */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(33, 37, 57, 0.7);
+  z-index: -1;
+}
+
+/* Основной контент располагается относительно и находится над фоном */
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  padding: 80px 20px 40px;  /* Дополнительный отступ сверху и снизу для эстетики */
+  text-align: center;
+  box-sizing: border-box;
+  margin-bottom: 60px;  /* Отступ снизу, чтобы футер не сливался с контентом */
+}
+
+.content-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.content-inner h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(88,103,221,0.5);
+}
+
+.content-inner p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Футер располагается в конце содержимого */
+.home-page-footer {
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+/* Анимация появления элементов */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивные настройки */
+@media (max-width: 768px) {
+  .content-inner h1 {
+    font-size: 2.5rem;
+  }
+  
+  .content-inner p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-inner h1 {
+    font-size: 2rem;
+  }
+  
+  .content-inner p {
+    font-size: 0.9rem;
+  }
+  
+  .home-page-footer {
+    font-size: 0.8rem;
+    padding: 10px;
+  }
+}
+
+.home-page-custom-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 66px;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+}
+
+.footer-text {
+    display: none;
+}
+
+.full-text {
+    display: block; 
+}
+
+@media (max-width: 675px) {
+    .home-page-custom-footer { 
+        height: 45px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 330px) {
+    .full-text {
+        display: none; 
+    }
+    .break-text {
+        display: block;
+    }
+}
+
+@media (max-width: 675px) {
+    .content-inner h1 {
+        font-size: 30px;
+        margin-bottom: 15px;
+    }
+
+    .content-inner p {
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+}

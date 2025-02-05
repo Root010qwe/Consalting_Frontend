@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { updateProfile } from '../../slices/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { Button, Form, Spinner } from 'react-bootstrap';
 import './ProfilePage.css';
 import { 
   setProfileUsername,
@@ -48,7 +47,6 @@ const ProfilePage = () => {
       
       if (updateProfile.fulfilled.match(result)) {
         dispatch(resetProfileForm());
-        
       }
     } catch (err) {
       console.error('Ошибка обновления:', err);
@@ -66,53 +64,39 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-        <h1>Профиль</h1>
-      <Form onSubmit={handleSubmit} className="profile-form">
-        <Form.Group className="mb-3">
-          <Form.Label>Имя пользователя</Form.Label>
-          <Form.Control
+      <h1>Профиль</h1>
+      <form onSubmit={handleSubmit} className="profile-form">
+        <div className="form-group">
+          <label htmlFor="username">Имя пользователя</label>
+          <input
+            className="form-control"
             type="text"
+            id="username"
             name="username"
             value={profileForm.username}
             onChange={handleChange}
           />
-        </Form.Group>
+        </div>
 
-        {/* <Form.Group className="mb-3">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            value={localData.email}
-            onChange={handleChange}
-          />
-        </Form.Group> */}
-
-        <Form.Group className="mb-3">
-          <Form.Label>Новый пароль</Form.Label>
-          <Form.Control
+        <div className="form-group">
+          <label htmlFor="password">Новый пароль</label>
+          <input
+            className="form-control"
             type="password"
+            id="password"
             name="password"
             value={profileForm.password}
             onChange={handleChange}
             placeholder=""
           />
-        </Form.Group>
+        </div>
 
         {error && <div className="error-message">{error}</div>}
 
-        <Button 
-          variant="primary" 
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? (
-            <Spinner size="sm" animation="border" />
-          ) : (
-            'Сохранить изменения'
-          )}
-        </Button>
-      </Form>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Загрузка...' : 'Сохранить изменения'}
+        </button>
+      </form>
     </div>
   );
 };

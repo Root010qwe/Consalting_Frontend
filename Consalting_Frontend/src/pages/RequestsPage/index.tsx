@@ -519,13 +519,15 @@ const RequestsPage: React.FC = () => {
                           src={qrImage}
                           alt="QR Icon"
                         />
-                        <div className="qr-hover">
-                          <img
-                            className="qr-code"
-                            src={`data:image/png;base64,${request.qr}`}
-                            alt="QR Code"
-                          />
-                        </div>
+                       <div className="qr-hover">
+  <div className="qr-code-container">
+    <img
+      className="qr-code"
+      src={`data:image/png;base64,${request.qr}`}
+      alt="QR Code"
+    />
+  </div>
+</div>
                       </div>
                     ) : (
                       <img

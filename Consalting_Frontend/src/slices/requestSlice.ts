@@ -13,6 +13,7 @@ interface RequestState {
   clientFilter: string;
   loading: boolean;
   error: string | null;
+  isInitialLoad: boolean;
 }
 
 const initialState: RequestState = {
@@ -23,6 +24,7 @@ const initialState: RequestState = {
   clientFilter: "",
   loading: false,
   error: null,
+  isInitialLoad: true,
 };
 
 interface UpdateStatusResponse {
@@ -52,9 +54,12 @@ const requestSlice = createSlice({
       if (action.payload.clientFilter !== undefined) {
         state.clientFilter = action.payload.clientFilter;
       }
+      state.isInitialLoad = true;
     },
     fetchRequestsStart: (state) => {
-      state.loading = true;
+      if (state.isInitialLoad) {
+        state.loading = true;
+      }
       state.error = null;
     },
     fetchRequestsSuccess: (state, action: PayloadAction<T_Request[]>) => {
@@ -64,20 +69,20 @@ const requestSlice = createSlice({
         qr: req.qr || null, // Проверяем, что `qr` не становится undefined
       }));
       state.loading = false;
+      state.isInitialLoad = false;
     },
     fetchRequestsFailure: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
       state.loading = false;
+      state.isInitialLoad = false;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(updateRequestStatus.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(updateRequestStatus.fulfilled, (state, action) => {
-        state.loading = false;
         const updatedRequest = state.requests.find(
           (request) => request.id === Number(action.meta.arg.requestId)
         );
@@ -85,11 +90,10 @@ const requestSlice = createSlice({
           updatedRequest.status = action.meta.arg.status;
           updatedRequest.completion_date = action.payload.completion_date;
           updatedRequest.total_cost = action.payload.total_cost;
-          updatedRequest.qr = action.payload.qr || null; // Обновляем QR-код
+          updatedRequest.qr = action.payload.qr || null;
         }
       })
       .addCase(updateRequestStatus.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.payload as string;
       });
   },

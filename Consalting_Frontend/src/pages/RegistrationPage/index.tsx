@@ -41,7 +41,7 @@ const RegistrationPage = () => {
   return (
     <div className="registration-page">
       <form onSubmit={handleSubmit}>
-        <h2>Регистрация</h2>
+        <h1>Регистрация</h1>
         {error && <div className="error-message">{error}</div>}
         
         <div className="form-group">
